@@ -1,0 +1,3365 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CSS Mastery - The Complete Interactive Guide</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&family=Space+Grotesk:wght@400;500;700&display=swap" rel="stylesheet">
+  <style>
+/* --- CORE FRAMEWORK (Fully Responsive) --- */
+:root {
+  /* Theme Colors */
+  --bg: #0c0c14;
+  --bg-secondary: #14141f;
+  --bg-card: #1a1a28;
+  --bg-input: #0a0a10;
+  --fg: #e4e4eb;
+  --fg-muted: #8888a0;
+  --accent: #00e5a0;
+  --accent-secondary: #ff6a3d;
+  --border: #2a2a3c;
+  
+  /* Layout Spacing - Mobile First */
+  --sidebar-width: 0px;
+  --header-height: 56px;
+  --radius: 8px;
+  --container-padding: 1rem;
+  --section-padding: 2rem 1rem;
+  
+  /* Transitions */
+  --transition: 0.2s ease;
+}
+
+/* Tablet */
+@media (min-width: 768px) {
+  :root {
+    --header-height: 60px;
+    --container-padding: 1.5rem;
+    --section-padding: 2.5rem 1.5rem;
+  }
+}
+
+/* Desktop */
+@media (min-width: 1024px) {
+  :root {
+    --sidebar-width: 260px;
+    --container-padding: 2rem;
+    --section-padding: 3rem 2rem;
+  }
+}
+
+/* Large Desktop */
+@media (min-width: 1440px) {
+  :root {
+    --sidebar-width: 280px;
+  }
+}
+
+[data-theme="light"] {
+  --bg: #f4f4f8;
+  --bg-secondary: #ffffff;
+  --bg-card: #ffffff;
+  --bg-input: #f0f0f5;
+  --fg: #101020;
+  --fg-muted: #666680;
+  --accent: #00b87a;
+  --accent-secondary: #e55a2d;
+  --border: #e0e0e8;
+}
+
+/* --- RESET & BASE --- */
+* { 
+  box-sizing: border-box; 
+  margin: 0; 
+  padding: 0; 
+}
+
+html { 
+  scroll-behavior: smooth;
+  font-size: 16px; /* Base font size */
+}
+
+/* Reduce font size slightly on very small screens */
+@media (max-width: 360px) {
+  html { font-size: 14px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  * { transition-duration: 0.01ms !important; }
+}
+
+body {
+  font-family: 'Space Grotesk', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  background: var(--bg);
+  color: var(--fg);
+  line-height: 1.6;
+  display: flex;
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+/* --- UTILITIES (Mobile First) --- */
+.flex { display: flex; }
+.flex-col { flex-direction: column; }
+.flex-1 { flex: 1; }
+.flex-wrap { flex-wrap: wrap; }
+.grid { display: grid; }
+.gap-1 { gap: 0.25rem; }
+.gap-2 { gap: 0.5rem; }
+.gap-3 { gap: 0.75rem; }
+.gap-4 { gap: 1rem; }
+.gap-6 { gap: 1.5rem; }
+.items-center { align-items: center; }
+.items-start { align-items: flex-start; }
+.justify-between { justify-content: space-between; }
+.justify-center { justify-content: center; }
+.w-full { width: 100%; }
+.h-full { height: 100%; }
+.p-1 { padding: 0.25rem; }
+.p-2 { padding: 0.5rem; }
+.p-4 { padding: 1rem; }
+.p-6 { padding: 1.5rem; }
+.px-4 { padding-left: 1rem; padding-right: 1rem; }
+.py-2 { padding-top: 0.5rem; padding-bottom: 0.5rem; }
+.m-auto { margin: auto; }
+.mb-2 { margin-bottom: 0.5rem; }
+.mb-4 { margin-bottom: 1rem; }
+.mb-6 { margin-bottom: 1.5rem; }
+.text-sm { font-size: 0.875rem; }
+.text-xs { font-size: 0.75rem; }
+.text-base { font-size: 1rem; }
+.text-lg { font-size: 1.125rem; }
+.text-xl { font-size: 1.25rem; }
+.text-2xl { font-size: 1.5rem; }
+.text-muted { color: var(--fg-muted); }
+.text-center { text-align: center; }
+.font-mono { font-family: 'JetBrains Mono', 'Courier New', monospace; }
+.font-bold { font-weight: 700; }
+.font-semibold { font-weight: 600; }
+.rounded { border-radius: var(--radius); }
+.rounded-full { border-radius: 9999px; }
+.hidden { display: none; }
+.block { display: block; }
+.inline-block { display: inline-block; }
+.bg-card { background: var(--bg-card); }
+.border { border: 1px solid var(--border); }
+.overflow-hidden { overflow: hidden; }
+.overflow-auto { overflow: auto; }
+.relative { position: relative; }
+.absolute { position: absolute; }
+.fixed { position: fixed; }
+
+/* Responsive Grid Utilities */
+.grid-cols-1 { grid-template-columns: repeat(1, 1fr); }
+
+@media (min-width: 640px) {
+  .sm-grid-cols-2 { grid-template-columns: repeat(2, 1fr); }
+  .sm-flex-row { flex-direction: row; }
+  .sm-block { display: block; }
+  .sm-hidden { display: none; }
+}
+
+@media (min-width: 768px) {
+  .md-grid-cols-2 { grid-template-columns: repeat(2, 1fr); }
+  .md-grid-cols-3 { grid-template-columns: repeat(3, 1fr); }
+  .md-flex-row { flex-direction: row; }
+  .md-block { display: block; }
+  .md-hidden { display: none; }
+  .md-w-auto { width: auto; }
+}
+
+@media (min-width: 1024px) {
+  .lg-grid-cols-3 { grid-template-columns: repeat(3, 1fr); }
+  .lg-grid-cols-4 { grid-template-columns: repeat(4, 1fr); }
+  .lg-flex-row { flex-direction: row; }
+  .lg-block { display: block; }
+  .lg-hidden { display: none; }
+}
+
+@media (min-width: 1280px) {
+  .xl-grid-cols-4 { grid-template-columns: repeat(4, 1fr); }
+  .xl-grid-cols-5 { grid-template-columns: repeat(5, 1fr); }
+}
+
+/* --- COMPONENTS --- */
+
+/* Sidebar - Mobile First */
+.sidebar {
+  width: 100vw;
+  height: 100vh;
+  position: fixed;
+  left: 0; 
+  top: 0;
+  background: var(--bg-secondary);
+  border-right: 1px solid var(--border);
+  display: flex;
+  flex-direction: column;
+  z-index: 200;
+  transform: translateX(-100%);
+  transition: transform var(--transition);
+  box-shadow: 2px 0 20px rgba(0,0,0,0.5);
+}
+
+.sidebar.open { 
+  transform: translateX(0); 
+}
+
+/* Tablet and up - sidebar always visible */
+@media (min-width: 1024px) {
+  .sidebar {
+    width: var(--sidebar-width);
+    transform: translateX(0);
+    box-shadow: none;
+    z-index: 100;
+  }
+}
+
+.sidebar-header {
+  padding: 1rem 1.25rem;
+  border-bottom: 1px solid var(--border);
+  font-weight: 700;
+  font-size: 1rem;
+  color: var(--accent);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+  min-height: var(--header-height);
+}
+
+@media (min-width: 768px) {
+  .sidebar-header {
+    padding: 1.5rem;
+    font-size: 1.1rem;
+  }
+}
+
+/* Mobile menu toggle button */
+.sidebar-close {
+  display: block;
+  background: none;
+  border: none;
+  color: var(--fg);
+  font-size: 1.5rem;
+  cursor: pointer;
+  padding: 0.25rem;
+  line-height: 1;
+}
+
+@media (min-width: 1024px) {
+  .sidebar-close { display: none; }
+}
+
+.sidebar-nav {
+  flex: 1;
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding: 1rem 0;
+  -webkit-overflow-scrolling: touch; /* Smooth scrolling on iOS */
+}
+
+.nav-section { 
+  margin-bottom: 1.5rem; 
+}
+
+.nav-title {
+  padding: 0.5rem 1.25rem;
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--fg-muted);
+  font-weight: 700;
+}
+
+@media (min-width: 768px) {
+  .nav-title {
+    padding: 0.5rem 1.5rem;
+  }
+}
+
+.nav-link {
+  display: block;
+  padding: 0.75rem 1.25rem;
+  color: var(--fg-muted);
+  text-decoration: none;
+  font-size: 0.9rem;
+  border-left: 3px solid transparent;
+  transition: all var(--transition);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+@media (min-width: 768px) {
+  .nav-link {
+    padding: 0.5rem 1.5rem;
+  }
+}
+
+.nav-link:hover { 
+  background: rgba(255,255,255,0.03); 
+  color: var(--fg); 
+}
+
+.nav-link.active { 
+  color: var(--fg); 
+  border-left-color: var(--accent); 
+  background: rgba(0, 229, 160, 0.05); 
+}
+
+/* Main Content - Responsive Margin */
+.main-content {
+  margin-left: 0;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  width: 100%;
+}
+
+@media (min-width: 1024px) {
+  .main-content {
+    margin-left: var(--sidebar-width);
+  }
+}
+
+/* Header - Responsive */
+.header {
+  height: var(--header-height);
+  background: rgba(12, 12, 20, 0.95);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px); /* Safari */
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 1rem;
+  position: sticky;
+  top: 0;
+  z-index: 50;
+}
+
+@media (min-width: 768px) {
+  .header {
+    padding: 0 1.5rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .header {
+    padding: 0 2rem;
+  }
+}
+
+[data-theme="light"] .header { 
+  background: rgba(255, 255, 255, 0.95); 
+}
+
+.header-title { 
+  font-weight: 600; 
+  font-size: 1rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 60%;
+}
+
+@media (min-width: 768px) {
+  .header-title {
+    font-size: 1.1rem;
+    max-width: none;
+  }
+}
+
+.header-actions { 
+  display: flex; 
+  gap: 0.5rem; 
+  align-items: center;
+}
+
+/* Mobile menu button */
+.menu-toggle {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: none;
+  border: none;
+  color: var(--fg);
+  font-size: 1.5rem;
+  cursor: pointer;
+  padding: 0.5rem;
+  margin-right: 0.5rem;
+}
+
+@media (min-width: 1024px) {
+  .menu-toggle { display: none; }
+}
+
+/* Buttons - Responsive */
+.btn {
+  padding: 0.5rem 0.75rem;
+  border-radius: 6px;
+  border: 1px solid var(--border);
+  background: var(--bg-card);
+  color: var(--fg);
+  font-family: inherit;
+  font-size: 0.8rem;
+  cursor: pointer;
+  transition: all var(--transition);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.3rem;
+  white-space: nowrap;
+  min-height: 36px;
+  touch-action: manipulation; /* Better touch performance */
+}
+
+@media (min-width: 768px) {
+  .btn {
+    padding: 0.5rem 1rem;
+    font-size: 0.85rem;
+  }
+}
+
+.btn:hover { 
+  border-color: var(--fg-muted); 
+  background: var(--bg-secondary); 
+}
+
+.btn:active {
+  transform: scale(0.98);
+}
+
+.btn-primary { 
+  background: var(--accent); 
+  color: #000; 
+  border-color: var(--accent); 
+  font-weight: 600; 
+}
+
+.btn-primary:hover { 
+  filter: brightness(1.1); 
+}
+
+.btn-sm { 
+  padding: 0.25rem 0.5rem; 
+  font-size: 0.75rem; 
+  min-height: 28px;
+}
+
+.btn-icon {
+  padding: 0.5rem;
+  width: 36px;
+  height: 36px;
+}
+
+/* Sections - Responsive */
+.section {
+  padding: var(--section-padding);
+  max-width: 100%;
+  border-bottom: 1px solid var(--border);
+}
+
+@media (min-width: 768px) {
+  .section {
+    max-width: 100%;
+  }
+}
+
+@media (min-width: 1280px) {
+  .section {
+    max-width: 1400px;
+    margin: 0 auto;
+  }
+}
+
+.section-title {
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin-bottom: 0.5rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  line-height: 1.2;
+}
+
+@media (min-width: 768px) {
+  .section-title {
+    font-size: 1.75rem;
+    gap: 0.75rem;
+  }
+}
+
+.section-title::before {
+  content: '';
+  display: block;
+  width: 3px;
+  height: 1.2rem;
+  background: var(--accent);
+  border-radius: 2px;
+  flex-shrink: 0;
+}
+
+@media (min-width: 768px) {
+  .section-title::before {
+    width: 4px;
+    height: 1.5rem;
+  }
+}
+
+.section-desc { 
+  color: var(--fg-muted); 
+  margin-bottom: 1.5rem; 
+  max-width: 100%;
+  font-size: 0.9rem;
+}
+
+@media (min-width: 768px) {
+  .section-desc {
+    margin-bottom: 2rem;
+    max-width: 700px;
+    font-size: 1rem;
+  }
+}
+
+/* Interactive Cards - Fully Responsive */
+.lab-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  overflow: hidden;
+  display: grid;
+  grid-template-columns: 1fr;
+  margin-bottom: 1.5rem;
+}
+
+@media (min-width: 768px) {
+  .lab-card {
+    margin-bottom: 2rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .lab-card { 
+    grid-template-columns: 320px 1fr; 
+  }
+}
+
+@media (min-width: 1280px) {
+  .lab-card { 
+    grid-template-columns: 350px 1fr; 
+  }
+}
+
+.lab-controls {
+  padding: 1rem;
+  background: var(--bg-secondary);
+  border-bottom: 1px solid var(--border);
+  border-right: none;
+}
+
+@media (min-width: 768px) {
+  .lab-controls {
+    padding: 1.5rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .lab-controls { 
+    border-right: 1px solid var(--border); 
+    border-bottom: none; 
+  }
+}
+
+.lab-preview {
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  min-height: 250px;
+  background: radial-gradient(circle at center, rgba(255,255,255,0.02) 0%, transparent 70%);
+}
+
+@media (min-width: 768px) {
+  .lab-preview {
+    padding: 2rem;
+    min-height: 300px;
+  }
+}
+
+/* Form Controls - Touch Friendly */
+.control-group { 
+  margin-bottom: 1rem; 
+}
+
+.control-label { 
+  display: flex; 
+  justify-content: space-between; 
+  font-size: 0.8rem; 
+  color: var(--fg-muted); 
+  margin-bottom: 0.5rem;
+  flex-wrap: wrap;
+  gap: 0.25rem;
+}
+
+.control-value { 
+  font-family: 'JetBrains Mono', monospace; 
+  color: var(--accent); 
+}
+
+input[type="range"] {
+  -webkit-appearance: none;
+  width: 100%;
+  height: 6px;
+  background: var(--border);
+  border-radius: 3px;
+  outline: none;
+  cursor: pointer;
+}
+
+input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 20px;
+  height: 20px;
+  background: var(--accent);
+  border-radius: 50%;
+  cursor: pointer;
+  transition: transform 0.1s;
+}
+
+input[type="range"]::-moz-range-thumb {
+  width: 20px;
+  height: 20px;
+  background: var(--accent);
+  border-radius: 50%;
+  cursor: pointer;
+  border: none;
+}
+
+input[type="range"]::-webkit-slider-thumb:hover { 
+  transform: scale(1.2); 
+}
+
+input[type="range"]::-webkit-slider-thumb:active { 
+  transform: scale(1.3); 
+}
+
+select, input[type="text"], input[type="number"] {
+  width: 100%;
+  padding: 0.625rem;
+  background: var(--bg-input);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  color: var(--fg);
+  font-family: inherit;
+  font-size: 1rem;
+  min-height: 44px; /* Touch-friendly size */
+}
+
+input[type="color"] {
+  -webkit-appearance: none;
+  width: 100%;
+  height: 44px;
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  cursor: pointer;
+  background: transparent;
+}
+
+input[type="color"]::-webkit-color-swatch-wrapper { 
+  padding: 2px; 
+}
+
+input[type="color"]::-webkit-color-swatch { 
+  border-radius: 2px; 
+  border: none; 
+}
+
+/* Code Output - Responsive */
+.code-display {
+  width: 100%;
+  padding: 0.75rem;
+  background: var(--bg-input);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.75rem;
+  margin-top: 1rem;
+  color: var(--accent);
+  white-space: pre-wrap;
+  word-break: break-all;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+@media (min-width: 768px) {
+  .code-display {
+    padding: 1rem;
+    font-size: 0.85rem;
+  }
+}
+
+/* Tabs - Touch Friendly */
+.tabs { 
+  display: flex; 
+  gap: 0.25rem; 
+  margin-bottom: 1rem; 
+  background: var(--bg-input); 
+  padding: 4px; 
+  border-radius: 6px;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+.tab { 
+  flex: 1; 
+  min-width: 80px;
+  padding: 0.625rem 0.5rem; 
+  text-align: center; 
+  font-size: 0.75rem; 
+  background: transparent; 
+  border: none; 
+  color: var(--fg-muted); 
+  cursor: pointer; 
+  border-radius: 4px;
+  transition: var(--transition);
+  white-space: nowrap;
+  touch-action: manipulation;
+}
+
+@media (min-width: 768px) {
+  .tab {
+    font-size: 0.8rem;
+    padding: 0.5rem;
+  }
+}
+
+.tab.active { 
+  background: var(--accent); 
+  color: #000; 
+  font-weight: 600; 
+}
+
+/* --- SPECIALIZED DEMO COMPONENTS --- */
+
+/* Selectors */
+.selector-demo-container { 
+  border: 1px dashed var(--border); 
+  padding: 0.75rem; 
+  background: var(--bg); 
+  position: relative;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+@media (min-width: 768px) {
+  .selector-demo-container {
+    padding: 1rem;
+  }
+}
+
+.selector-item { 
+  transition: all 0.3s; 
+  padding: 4px 8px; 
+  border-radius: 4px; 
+  margin: 2px; 
+  display: inline-block;
+  font-size: 0.85rem;
+}
+
+.selector-highlight { 
+  background: rgba(0, 229, 160, 0.2); 
+  outline: 2px solid var(--accent); 
+}
+
+/* Math Canvas */
+#mathCanvas { 
+  background: var(--bg-input); 
+  border-radius: 6px; 
+  width: 100%; 
+  height: 180px;
+  max-width: 100%;
+}
+
+@media (min-width: 768px) {
+  #mathCanvas {
+    height: 200px;
+  }
+}
+
+/* Transform Box */
+.transform-stage { 
+  perspective: 800px; 
+  width: 100%; 
+  max-width: 200px;
+  height: 200px;
+  margin: 0 auto;
+}
+
+.transform-box {
+  width: 80px; 
+  height: 80px; 
+  background: linear-gradient(135deg, var(--accent), #3b82f6);
+  display: flex; 
+  align-items: center; 
+  justify-content: center; 
+  color: #000; 
+  font-weight: bold;
+  border-radius: 8px; 
+  transition: transform 0.1s linear;
+}
+
+@media (min-width: 768px) {
+  .transform-box {
+    width: 100px;
+    height: 100px;
+  }
+}
+
+/* Grid/Flex Playground */
+.play-ground {
+  min-height: 200px;
+  background: var(--bg-input);
+  border: 1px dashed var(--border);
+  border-radius: 6px;
+  padding: 0.75rem;
+  display: flex;
+  overflow: auto;
+}
+
+@media (min-width: 768px) {
+  .play-ground {
+    padding: 1rem;
+  }
+}
+
+.play-item {
+  background: var(--accent);
+  color: #000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 4px;
+  font-weight: 600;
+  padding: 0.75rem;
+  margin: 2px;
+  min-width: 60px;
+  min-height: 60px;
+  font-size: 0.85rem;
+}
+
+@media (min-width: 768px) {
+  .play-item {
+    padding: 1rem;
+    min-width: 80px;
+    min-height: 80px;
+    font-size: 1rem;
+  }
+}
+
+/* Command Palette */
+.command-palette {
+  position: fixed; 
+  top: 0; 
+  left: 0; 
+  right: 0; 
+  bottom: 0;
+  background: rgba(0,0,0,0.7);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  z-index: 1000;
+  display: none; 
+  align-items: flex-start; 
+  justify-content: center;
+  padding: 1rem;
+  padding-top: 10vh;
+}
+
+@media (min-width: 768px) {
+  .command-palette {
+    padding-top: 15vh;
+  }
+}
+
+.command-palette.open { 
+  display: flex; 
+}
+
+.command-box {
+  width: 100%; 
+  max-width: 600px;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+}
+
+.command-input { 
+  width: 100%; 
+  padding: 1rem; 
+  border: none; 
+  background: transparent; 
+  font-size: 1rem; 
+  color: var(--fg);
+}
+
+@media (min-width: 768px) {
+  .command-input {
+    font-size: 1.1rem;
+  }
+}
+
+.command-results { 
+  max-height: 250px; 
+  overflow-y: auto; 
+  border-top: 1px solid var(--border);
+  -webkit-overflow-scrolling: touch;
+}
+
+@media (min-width: 768px) {
+  .command-results {
+    max-height: 300px;
+  }
+}
+
+/* Overlay for mobile sidebar */
+.sidebar-overlay {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 150;
+}
+
+.sidebar-overlay.active {
+  display: block;
+}
+
+@media (min-width: 1024px) {
+  .sidebar-overlay {
+    display: none !important;
+  }
+}
+
+/* Small screen specific utilities */
+@media (max-width: 640px) {
+  .hide-mobile { display: none !important; }
+  .stack-mobile { 
+    flex-direction: column !important; 
+    align-items: stretch !important;
+  }
+  .full-width-mobile { width: 100% !important; }
+}
+
+/* Scrollbar Styling (Optional, for better UX) */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--bg-secondary);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--border);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--fg-muted);
+}
+
+/* Print Styles */
+@media print {
+  .sidebar,
+  .header,
+  .command-palette,
+  .sidebar-overlay,
+  .menu-toggle {
+    display: none !important;
+  }
+  
+  .main-content {
+    margin-left: 0 !important;
+  }
+  
+  body {
+    background: white;
+    color: black;
+  }
+}
+  </style>
+</head>
+<body>
+
+  <!-- Sidebar Overlay (for mobile) -->
+  <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+  <!-- Command Palette -->
+  <div class="command-palette" id="commandPalette">
+    <div class="command-box">
+      <input type="text" class="command-input" id="commandInput" placeholder="Search CSS Properties, Functions, Selectors...">
+      <div class="command-results p-4 text-muted text-sm" id="commandResults">Type to search...</div>
+    </div>
+  </div>
+
+  <!-- Sidebar -->
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-header">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+      CSS Mastery
+      <button class="sidebar-close" id="sidebarClose" aria-label="Close menu">✕</button>
+    </div>
+    <nav class="sidebar-nav">
+      <div class="nav-section">
+        <div class="nav-title">Fundamentals</div>
+        <a href="#syntax" class="nav-link">Syntax & Cascade</a>
+        <a href="#selectors" class="nav-link">Selectors</a>
+      </div>
+      <div class="nav-section">
+        <div class="nav-title">Functions Lab</div>
+        <a href="#colors" class="nav-link active">Color Functions</a>
+        <a href="#math" class="nav-link">Math Functions</a>
+        <a href="#transforms" class="nav-link">Transforms</a>
+        <a href="#gradients" class="nav-link">Gradients</a>
+        <a href="#filters" class="nav-link">Filters</a>
+        <a href="#shapes" class="nav-link">Shapes & Clip</a>
+      </div>
+      <div class="nav-section">
+        <div class="nav-title">Layout Engines</div>
+        <a href="#flexbox" class="nav-link">Flexbox</a>
+        <a href="#grid" class="nav-link">Grid</a>
+      </div>
+      <div class="nav-section">
+        <div class="nav-title">Advanced</div>
+        <a href="#animations" class="nav-link">Animations</a>
+      </div>
+    </nav>
+  </aside>
+
+  <!-- Main Content -->
+  <main class="main-content">
+    
+    <!-- Header -->
+    <header class="header">
+      <div class="flex items-center gap-2">
+        <button class="menu-toggle" id="menuToggle" aria-label="Open menu">☰</button>
+        <span class="header-title">CSS Mastery</span>
+      </div>
+      <div class="header-actions">
+        <button class="btn btn-sm" id="searchBtn">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+          <span class="hide-mobile">Search (Ctrl+K)</span>
+        </button>
+        <button class="btn btn-sm" id="themeToggle">
+          <span>🌙</span>
+          <span class="hide-mobile">Theme</span>
+        </button>
+      </div>
+    </header>
+
+    <!-- Intro -->
+<section class="section"
+  style="border-bottom: none;
+         font-size: 2rem;
+         display: flex;
+         flex-direction: column;
+         align-items: flex-start;
+         gap: 1rem;">
+
+  <h1>CSS Mastery</h1>
+
+  <p class="section-desc">
+    An interactive, visual guide to every modern CSS feature.
+    Adjust parameters live and see the results instantly.
+  </p>
+
+  <h3 class="section-desc mobile-only">
+    <span style="color: var(--accent);">Suggestion:</span>
+    Use a bigger screen for better experience.
+  </h3>
+
+</section>
+
+<style>
+  .mobile-only {
+    display: none;
+  }
+
+  @media (max-width: 768px) {
+    .mobile-only {
+      display: block;
+    }
+  }
+</style>
+
+    </section>
+<!-- SYNTAX & CASCADE SECTION -->
+
+<section id="syntax" class="section">
+  <h2 class="section-title">CSS Syntax & Cascade</h2>
+  <p class="section-desc">Understanding CSS syntax, the cascade, inheritance, and specificity rules.</p>
+
+  <!-- CSS Syntax Anatomy -->
+  <div class="lab-card">
+    <div class="lab-controls">
+      <h3 class="font-bold mb-4">CSS Rule Anatomy</h3>
+      <p class="text-sm text-muted mb-4">Click on different parts to learn about CSS syntax</p>
+      
+      <div class="control-group">
+        <div class="control-label"><span>Active Part</span></div>
+        <select id="syntaxPart">
+          <option value="selector">Selector</option>
+          <option value="property">Property</option>
+          <option value="value">Value</option>
+          <option value="declaration">Declaration</option>
+          <option value="rule">Complete Rule</option>
+        </select>
+      </div>
+
+      <div class="mt-4 p-4 rounded" style="background: var(--bg-input);">
+        <div class="text-xs text-muted mb-2">Explanation:</div>
+        <div id="syntaxExplanation" class="text-sm">
+          Select a part to see its explanation
+        </div>
+      </div>
+    </div>
+    
+    <div class="lab-preview">
+      <div class="w-full">
+        <div class="code-display font-mono text-base" style="line-height: 2; white-space: pre;">
+<span id="syntaxSelector" class="syntax-part" data-part="selector">.button</span> {
+  <span id="syntaxProperty" class="syntax-part" data-part="property">background-color</span>: <span id="syntaxValue" class="syntax-part" data-part="value">#00e5a0</span>;
+  <span class="syntax-part" data-part="property">padding</span>: <span class="syntax-part" data-part="value">10px 20px</span>;
+}</div>
+      </div>
+
+      <div class="mt-6 w-full">
+        <div class="text-xs text-muted mb-2">Live Preview</div>
+        <button id="syntaxPreview" class="btn" style="background-color: #00e5a0; padding: 10px 20px; color: #000; font-weight: 600;">
+          Button Preview
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- The Cascade -->
+  <div class="lab-card mt-6">
+    <div class="lab-controls">
+      <h3 class="font-bold mb-4">The Cascade</h3>
+      <p class="text-sm text-muted mb-4">Understanding how CSS rules are applied when there are conflicts</p>
+
+      <div class="control-group">
+        <div class="control-label"><span>Enable User Agent Styles</span></div>
+        <label class="flex items-center gap-2">
+          <input type="checkbox" id="cascadeUserAgent" checked>
+          <span class="text-sm">Browser defaults</span>
+        </label>
+      </div>
+
+      <div class="control-group">
+        <div class="control-label"><span>Enable User Styles</span></div>
+        <label class="flex items-center gap-2">
+          <input type="checkbox" id="cascadeUser" checked>
+          <span class="text-sm">User preferences</span>
+        </label>
+      </div>
+
+      <div class="control-group">
+        <div class="control-label"><span>Enable Author Styles</span></div>
+        <label class="flex items-center gap-2">
+          <input type="checkbox" id="cascadeAuthor" checked>
+          <span class="text-sm">Developer CSS</span>
+        </label>
+      </div>
+
+      <div class="control-group">
+        <div class="control-label"><span>Use !important</span></div>
+        <label class="flex items-center gap-2">
+          <input type="checkbox" id="cascadeImportant">
+          <span class="text-sm">Override with !important</span>
+        </label>
+      </div>
+
+      <div class="mt-4 p-4 rounded" style="background: var(--bg-input);">
+        <div class="text-xs font-bold mb-2">Cascade Order (lowest to highest priority):</div>
+        <ol class="text-sm space-y-1" style="list-style: decimal; margin-left: 1.5rem;">
+          <li>User Agent (Browser) Styles</li>
+          <li>User Styles</li>
+          <li>Author Styles</li>
+          <li>Author !important</li>
+          <li>User !important</li>
+          <li>User Agent !important</li>
+        </ol>
+      </div>
+    </div>
+    
+    <div class="lab-preview">
+      <div class="w-full space-y-4" style="display: flex; flex-direction: column; gap: 1rem;">
+        <div>
+          <div class="text-xs text-muted mb-2">Result:</div>
+          <div id="cascadeBox" style="padding: 2rem; border-radius: 8px; text-align: center; font-weight: bold; transition: all 0.3s;">
+            Cascade Demo
+          </div>
+        </div>
+
+        <div class="code-display text-sm">
+          <div id="cascadeCode">/* Applied styles will show here */</div>
+        </div>
+
+        <div class="text-xs text-muted">
+          Toggle different style sources to see how the cascade resolves conflicts
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Inheritance Demo -->
+  <div class="lab-card mt-6">
+    <div class="lab-controls">
+      <h3 class="font-bold mb-4">Inheritance</h3>
+      <p class="text-sm text-muted mb-4">See which properties are inherited from parent elements. (If you are using it in small screen scroll down to see the changes.)</p>
+
+      <div class="control-group">
+        <div class="control-label"><span>Parent Font Size</span><span class="control-value" id="inheritFontSizeVal">16px</span></div>
+        <input type="range" min="12" max="32" value="16" id="inheritFontSize">
+      </div>
+
+      <div class="control-group">
+        <div class="control-label"><span>Parent Color</span></div>
+        <input type="color" id="inheritColor" value="#00e5a0">
+      </div>
+
+      <div class="control-group">
+        <div class="control-label"><span>Parent Border</span></div>
+        <label class="flex items-center gap-2">
+          <input type="checkbox" id="inheritBorder">
+          <span class="text-sm">2px solid border</span>
+        </label>
+      </div>
+
+      <div class="mt-4 p-4 rounded" style="background: var(--bg-input);">
+        <div class="text-xs font-bold mb-2">Inherited Properties:</div>
+        <ul class="text-xs space-y-1 text-muted" style="list-style: disc; margin-left: 1.5rem;">
+          <li>color ✓</li>
+          <li>font-family ✓</li>
+          <li>font-size ✓</li>
+          <li>line-height ✓</li>
+          <li>text-align ✓</li>
+        </ul>
+        <div class="text-xs font-bold mt-3 mb-2">Not Inherited:</div>
+        <ul class="text-xs space-y-1 text-muted" style="list-style: disc; margin-left: 1.5rem;">
+          <li>border ✗</li>
+          <li>margin ✗</li>
+          <li>padding ✗</li>
+          <li>background ✗</li>
+        </ul>
+      </div>
+    </div>
+    
+    <div class="lab-preview">
+      <div class="w-full">
+        <div id="inheritParent" style="padding: 2rem; border-radius: 8px; transition: all 0.3s;">
+          <div style="font-weight: bold; margin-bottom: 1rem;">Parent Element</div>
+          <div id="inheritChild" style="padding: 1.5rem; background: var(--bg-input); border-radius: 6px;">
+            <div style="font-weight: bold; margin-bottom: 0.5rem;">Child Element</div>
+            <div class="text-sm">This child inherits: color, font-size, font-family</div>
+            <div class="text-sm">But NOT: border, padding, background</div>
+          </div>
+        </div>
+
+        <div class="code-display mt-4 text-sm" id="inheritOutput">
+/* Parent styles */
+.parent {
+  font-size: 16px;
+  color: #00e5a0;
+}
+
+/* Child inherits color and font-size */
+.child {
+  /* inherited from parent */
+}
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- CSS Variables & Custom Properties -->
+  <div class="lab-card mt-6">
+    <div class="lab-controls">
+      <h3 class="font-bold mb-4">CSS Custom Properties (Variables)</h3>
+      <p class="text-sm text-muted mb-4">Define and use CSS variables that cascade and inherit.(If you are using it in small screen scroll down to see the changes.)</p>
+
+      <div class="control-group">
+        <div class="control-label"><span>--primary-color</span></div>
+        <input type="color" id="varPrimary" value="#00e5a0">
+      </div>
+
+      <div class="control-group">
+        <div class="control-label"><span>--secondary-color</span></div>
+        <input type="color" id="varSecondary" value="#ff6a3d">
+      </div>
+
+      <div class="control-group">
+        <div class="control-label"><span>--spacing</span><span class="control-value" id="varSpacingVal">16px</span></div>
+        <input type="range" min="8" max="48" value="16" id="varSpacing">
+      </div>
+
+      <div class="control-group">
+        <div class="control-label"><span>--border-radius</span><span class="control-value" id="varRadiusVal">8px</span></div>
+        <input type="range" min="0" max="24" value="8" id="varRadius">
+      </div>
+
+      <div class="mt-4 p-4 rounded" style="background: var(--bg-input);">
+        <div class="text-xs font-bold mb-2">Benefits:</div>
+        <ul class="text-xs space-y-1 text-muted" style="list-style: disc; margin-left: 1.5rem;">
+          <li>Reusable values</li>
+          <li>Easy theming</li>
+          <li>Cascade & inherit</li>
+          <li>Dynamic with JavaScript</li>
+          <li>Fallback values</li>
+        </ul>
+      </div>
+    </div>
+    
+    <div class="lab-preview">
+      <div class="w-full space-y-4" style="display: flex; flex-direction: column; gap: 1rem;">
+        <div id="varDemo" style="transition: all 0.3s;">
+          <div id="varCard1" style="margin-bottom: 1rem;">
+            <div style="font-weight: bold; margin-bottom: 0.5rem;">Card 1</div>
+            <div class="text-sm">Uses --primary-color and --spacing</div>
+          </div>
+          <div id="varCard2">
+            <div style="font-weight: bold; margin-bottom: 0.5rem;">Card 2</div>
+            <div class="text-sm">Uses --secondary-color and --spacing</div>
+          </div>
+        </div>
+
+        <div class="code-display text-sm" id="varOutput">
+:root {
+  --primary-color: #00e5a0;
+  --secondary-color: #ff6a3d;
+  --spacing: 16px;
+  --border-radius: 8px;
+}
+
+.card {
+  padding: var(--spacing);
+  border-radius: var(--border-radius);
+  background: var(--primary-color);
+}
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- At-Rules -->
+  <div class="lab-card mt-6">
+    <div class="lab-controls">
+      <h3 class="font-bold mb-4">CSS At-Rules</h3>
+      <p class="text-sm text-muted mb-4">Special CSS rules that control behavior</p>
+
+      <div class="control-group">
+        <div class="control-label"><span>Select At-Rule</span></div>
+        <select id="atRuleType">
+          <option value="media">@media (Media Queries)</option>
+          <option value="import">@import (Import Stylesheets)</option>
+          <option value="keyframes">@keyframes (Animations)</option>
+          <option value="font-face">@font-face (Custom Fonts)</option>
+          <option value="supports">@supports (Feature Queries)</option>
+          <option value="layer">@layer (Cascade Layers)</option>
+        </select>
+      </div>
+
+      <div id="atRuleInfo" class="mt-4 p-4 rounded" style="background: var(--bg-input);">
+        <!-- Dynamic content -->
+      </div>
+    </div>
+    
+    <div class="lab-preview">
+      <div class="w-full">
+        <div class="code-display text-sm" id="atRuleOutput">
+/* Select an at-rule to see examples */
+        </div>
+
+        <div class="mt-4 p-4 rounded" style="background: var(--bg-input);">
+          <div class="text-xs font-bold mb-2">Common At-Rules:</div>
+          <div class="text-xs space-y-1 text-muted">
+            <div><span class="font-mono" style="color: var(--accent);">@media</span> - Responsive design</div>
+            <div><span class="font-mono" style="color: var(--accent);">@import</span> - Import external stylesheets</div>
+            <div><span class="font-mono" style="color: var(--accent);">@keyframes</span> - Define animations</div>
+            <div><span class="font-mono" style="color: var(--accent);">@font-face</span> - Custom fonts</div>
+            <div><span class="font-mono" style="color: var(--accent);">@supports</span> - Feature detection</div>
+            <div><span class="font-mono" style="color: var(--accent);">@layer</span> - Cascade layers</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</section>
+    <!-- SELECTORS SECTION -->
+    <section id="selectors" class="section">
+      <h2 class="section-title">Selectors</h2>
+      <p class="section-desc">Target elements precisely. Interactive highlighting shows exactly which elements match.</p>
+      
+      <div class="lab-card">
+        <div class="lab-controls">
+          <div class="mb-4">
+            <label class="text-sm text-muted">Input Selector</label>
+            <input type="text" id="selectorInput" value="li" class="mt-1">
+          </div>
+          <div class="text-sm text-muted mb-2">Try these:</div>
+          <div class="flex gap-2 flex-wrap">
+            <button class="btn btn-sm" data-selector="li">Type (li)</button>
+            <button class="btn btn-sm" data-selector=".active">Class (.active)</button>
+            <button class="btn btn-sm" data-selector="#unique">ID (#unique)</button>
+            <button class="btn btn-sm" data-selector="ul > li">Child (>)</button>
+            <button class="btn btn-sm" data-selector="li:nth-child(odd)">:nth-child</button>
+          </div>
+          <div class="code-display mt-4" id="selectorOutput">Select an element to inspect.</div>
+        </div>
+        <div class="lab-preview" style="align-items: start; justify-content: start;">
+           <div class="selector-demo-container w-full" id="selectorDemo">
+             <ul class="p-4 border rounded" style="border-color: var(--border);">
+               <li class="selector-item">Item 1</li>
+               <li class="selector-item active">Item 2 (has .active)</li>
+               <li class="selector-item">Item 3</li>
+               <li class="selector-item" id="unique">Item 4 (has #unique)</li>
+               <li class="selector-item">Item 5</li>
+             </ul>
+           </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- COLOR FUNCTIONS SECTION -->
+    <section id="colors" class="section">
+      <h2 class="section-title">Color Functions</h2>
+      <p class="section-desc">Mix, blend, and define colors in modern spaces (rgb, hsl, oklch, color-mix).</p>
+
+      <div class="lab-card">
+        <div class="lab-controls">
+          <div class="tabs">
+            <button class="tab active" data-color-mode="rgb">RGB</button>
+            <button class="tab" data-color-mode="hsl">HSL</button>
+            <button class="tab" data-color-mode="oklch">OKLCH</button>
+          </div>
+          
+          <!-- RGB Controls -->
+          <div id="rgbPanel">
+            <div class="control-group"><div class="control-label"><span>Red</span><span class="control-value" id="rVal">120</span></div><input type="range" min="0" max="255" value="120" id="rIn"></div>
+            <div class="control-group"><div class="control-label"><span>Green</span><span class="control-value" id="gVal">180</span></div><input type="range" min="0" max="255" value="180" id="gIn"></div>
+            <div class="control-group"><div class="control-label"><span>Blue</span><span class="control-value" id="bVal">90</span></div><input type="range" min="0" max="255" value="90" id="bIn"></div>
+          </div>
+          
+          <!-- HSL Controls -->
+          <div id="hslPanel" class="hidden">
+            <div class="control-group"><div class="control-label"><span>Hue</span><span class="control-value" id="hVal">150</span></div><input type="range" min="0" max="360" value="150" id="hIn"></div>
+            <div class="control-group"><div class="control-label"><span>Saturation</span><span class="control-value" id="sVal">70</span></div><input type="range" min="0" max="100" value="70" id="sIn"></div>
+            <div class="control-group"><div class="control-label"><span>Lightness</span><span class="control-value" id="lVal">50</span></div><input type="range" min="0" max="100" value="50" id="lIn"></div>
+          </div>
+
+          <!-- OKLCH Controls -->
+          <div id="oklchPanel" class="hidden">
+            <div class="control-group"><div class="control-label"><span>Lightness</span><span class="control-value" id="lchLVal">70</span></div><input type="range" min="0" max="100" value="70" id="lchLIn"></div>
+            <div class="control-group"><div class="control-label"><span>Chroma</span><span class="control-value" id="lchCVal">0.15</span></div><input type="range" min="0" max="0.4" step="0.01" value="0.15" id="lchCIn"></div>
+            <div class="control-group"><div class="control-label"><span>Hue</span><span class="control-value" id="lchHVal">150</span></div><input type="range" min="0" max="360" value="150" id="lchHIn"></div>
+          </div>
+        </div>
+        <div class="lab-preview">
+          <div style="width: 150px; height: 150px; border-radius: 50%; transition: background 0.2s; box-shadow: 0 10px 30px rgba(0,0,0,0.2);" id="colorSwatch"></div>
+          <div class="code-display w-full" id="colorOutput">rgb(120, 180, 90)</div>
+        </div>
+      </div>
+      
+      <!-- Color Mix -->
+      <div class="lab-card">
+        <div class="lab-controls">
+           <h3 class="text-lg font-bold mb-4">color-mix()</h3>
+           <div class="grid md-grid-2 gap-4">
+             <div><label class="text-xs text-muted">Color 1</label><input type="color" id="mix1" value="#00e5a0"></div>
+             <div><label class="text-xs text-muted">Color 2</label><input type="color" id="mix2" value="#ff6a3d"></div>
+           </div>
+           <div class="control-group mt-4"><div class="control-label"><span>Percentage</span><span class="control-value" id="mixPVal">50%</span></div><input type="range" min="0" max="100" value="50" id="mixP"></div>
+        </div>
+        <div class="lab-preview">
+           <div class="flex gap-2 items-center w-full justify-center">
+             <div style="width: 80px; height: 80px; border-radius: 8px;" id="mixSwatch1"></div>
+             <div style="width: 120px; height: 120px; border-radius: 12px; border: 2px solid var(--border);" id="mixSwatchRes"></div>
+             <div style="width: 80px; height: 80px; border-radius: 8px;" id="mixSwatch2"></div>
+           </div>
+           <div class="code-display w-full" id="mixOutput">color-mix(in srgb, #00e5a0 50%, #ff6a3d)</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- MATH FUNCTIONS SECTION -->
+    <section id="math" class="section">
+      <h2 class="section-title">Math Functions</h2>
+      <p class="section-desc">calc(), clamp(), min(), max() and trigonometric functions.</p>
+      
+      <div class="lab-card">
+        <div class="lab-controls">
+          <h3 class="font-bold mb-4">calc()</h3>
+          <div class="control-group">
+             <label class="text-xs text-muted">Formula</label>
+             <input type="text" id="calcIn" value="100% - 50px">
+          </div>
+           <div class="control-group">
+             <label class="text-xs text-muted">Container Width</label>
+             <input type="range" min="100" max="800" value="400" id="calcContainer">
+          </div>
+          
+          <h3 class="font-bold mb-4 mt-6">clamp()</h3>
+          <div class="grid gap-2">
+             <input type="text" id="clampMin" value="1rem">
+             <input type="text" id="clampVal" value="5vw">
+             <input type="text" id="clampMax" value="3rem">
+          </div>
+        </div>
+        <div class="lab-preview">
+          <div style="background: var(--bg-input); border:1px dashed var(--border); padding: 1rem; width: 100%;" id="calcContainerBox">
+             <div style="height: 40px; background: var(--accent); border-radius: 4px;" id="calcResult"></div>
+          </div>
+          <div class="code-display" id="calcOutput">width: calc(100% - 50px);</div>
+          
+          <div class="mt-6 text-center w-full">
+             <h4 class="text-muted text-sm mb-2">Responsive Text (resize window)</h4>
+             <div id="clampText" style="font-weight: bold; word-break: break-word;">Responsive Text</div>
+          </div>
+          <div class="code-display" id="clampOutput">font-size: clamp(1rem, 5vw, 3rem);</div>
+        </div>
+      </div>
+      
+      <!-- Trigonometry -->
+      <div class="lab-card">
+        <div class="lab-controls">
+          <h3 class="font-bold mb-4">Trigonometry</h3>
+          <div class="tabs">
+             <button class="tab active" data-math-fn="sin">sin()</button>
+             <button class="tab" data-math-fn="cos">cos()</button>
+          </div>
+          <div class="control-group"><div class="control-label"><span>Degrees</span><span class="control-value" id="mathDegVal">0</span></div><input type="range" min="0" max="360" value="0" id="mathDeg"></div>
+        </div>
+        <div class="lab-preview">
+           <canvas id="mathCanvas"></canvas>
+           <div class="code-display" id="mathOutput">transform: translateY(calc(sin(0deg) * 50px));</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- TRANSFORMS SECTION -->
+    <section id="transforms" class="section">
+      <h2 class="section-title">Transform Functions</h2>
+      <p class="section-desc">2D and 3D transformation visualization.</p>
+      
+      <div class="lab-card">
+        <div class="lab-controls">
+          <div class="control-group"><div class="control-label"><span>Rotate X</span><span class="control-value" id="rxVal">0</span></div><input type="range" min="0" max="360" value="0" id="rxIn"></div>
+          <div class="control-group"><div class="control-label"><span>Rotate Y</span><span class="control-value" id="ryVal">0</span></div><input type="range" min="0" max="360" value="0" id="ryIn"></div>
+          <div class="control-group"><div class="control-label"><span>Rotate Z</span><span class="control-value" id="rzVal">0</span></div><input type="range" min="0" max="360" value="0" id="rzIn"></div>
+          <div class="control-group"><div class="control-label"><span>Scale</span><span class="control-value" id="scVal">1</span></div><input type="range" min="0.5" max="2" step="0.1" value="1" id="scIn"></div>
+          <div class="control-group"><div class="control-label"><span>Perspective</span><span class="control-value" id="perspVal">800</span></div><input type="range" min="100" max="2000" value="800" id="perspIn"></div>
+        </div>
+        <div class="lab-preview">
+          <div class="transform-stage" id="transformStage">
+             <div class="transform-box" id="transformBox">CSS</div>
+          </div>
+          <div class="code-display" id="transformOutput">transform: rotateX(0) rotateY(0);</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- GRADIENTS SECTION -->
+    <section id="gradients" class="section">
+      <h2 class="section-title">Gradient Functions</h2>
+      <p class="section-desc">linear-gradient, radial-gradient, conic-gradient.</p>
+      
+      <div class="lab-card">
+        <div class="lab-controls">
+          <div class="tabs">
+             <button class="tab active" data-grad-type="linear">Linear</button>
+             <button class="tab" data-grad-type="radial">Radial</button>
+             <button class="tab" data-grad-type="conic">Conic</button>
+          </div>
+          <div class="grid grid-cols-2 gap-2">
+            <div><label class="text-xs text-muted">Color 1</label><input type="color" id="gC1" value="#00e5a0"></div>
+            <div><label class="text-xs text-muted">Color 2</label><input type="color" id="gC2" value="#ff6a3d"></div>
+          </div>
+          <div class="control-group"><div class="control-label"><span>Angle/Position</span><span class="control-value" id="gAngVal">90</span></div><input type="range" min="0" max="360" value="90" id="gAng"></div>
+        </div>
+        <div class="lab-preview">
+          <div style="width: 200px; height: 200px; border-radius: 8px;" id="gradBox"></div>
+          <div class="code-display" id="gradOutput">linear-gradient(90deg, #00e5a0, #ff6a3d)</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- FILTERS SECTION -->
+    <section id="filters" class="section">
+      <h2 class="section-title">Filter Functions</h2>
+      <p class="section-desc">blur, brightness, contrast, hue-rotate, drop-shadow.</p>
+      
+      <div class="lab-card">
+        <div class="lab-controls">
+          <div class="control-group"><div class="control-label"><span>Blur</span><span class="control-value" id="fBlurVal">0</span>px</div><input type="range" min="0" max="20" value="0" id="fBlur"></div>
+          <div class="control-group"><div class="control-label"><span>Brightness</span><span class="control-value" id="fBrightVal">100</span>%</div><input type="range" min="0" max="200" value="100" id="fBright"></div>
+          <div class="control-group"><div class="control-label"><span>Contrast</span><span class="control-value" id="fContrastVal">100</span>%</div><input type="range" min="0" max="200" value="100" id="fContrast"></div>
+          <div class="control-group"><div class="control-label"><span>Hue Rotate</span><span class="control-value" id="fHueVal">0</span>deg</div><input type="range" min="0" max="360" value="0" id="fHue"></div>
+        </div>
+        <div class="lab-preview">
+          <div id="filterBox" style="width: 200px; height: 150px; background: url('data:image/svg+xml;utf8,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%22200%22 height=%22150%22><rect width=%22200%22 height=%22150%22 fill=%22%23333%22/><circle cx=%22100%22 cy=%2275%22 r=%2250%22 fill=%22%2300e5a0%22/></svg>'); background-size: cover; border-radius: 8px; transition: filter 0.2s;"></div>
+          <div class="code-display" id="filterOutput">filter: none;</div>
+        </div>
+      </div>
+    </section>
+<!-- SHAPES SECTION -->
+<section id="shapes" class="section">
+  <h2 class="section-title">CSS Shapes</h2>
+  <p class="section-desc">Create geometric shapes and use shape-outside for text flow.</p>
+
+  <div class="lab-card">
+    <div class="lab-controls">
+      <div class="tabs">
+        <button class="tab active" data-shape-mode="basic">Basic Shapes</button>
+        <button class="tab" data-shape-mode="outside">Shape Outside</button>
+      </div>
+
+      <!-- Basic Shapes Controls -->
+      <div id="basicShapesPanel">
+        <div class="control-group">
+          <div class="control-label"><span>Shape</span></div>
+          <select id="shapeType" class="w-full p-2 rounded bg-[var(--bg-input)] border border-[var(--border)]">
+            <option value="circle">Circle</option>
+            <option value="ellipse">Ellipse</option>
+            <option value="triangle">Triangle</option>
+            <option value="polygon">Polygon</option>
+            <option value="star">Star</option>
+          </select>
+        </div>
+        <div class="control-group">
+          <div class="control-label"><span>Size</span><span class="control-value" id="shapeSizeVal">100px</span></div>
+          <input type="range" min="40" max="200" value="100" id="shapeSizeIn">
+        </div>
+        <div class="control-group">
+          <div class="control-label"><span>Rotation</span><span class="control-value" id="shapeRotVal">0deg</span></div>
+          <input type="range" min="0" max="360" value="0" id="shapeRotIn">
+        </div>
+        <div class="control-group">
+          <div class="control-label"><span>Border Radius</span><span class="control-value" id="shapeRadiusVal">0px</span></div>
+          <input type="range" min="0" max="50" value="0" id="shapeRadiusIn">
+        </div>
+      </div>
+
+      <!-- Shape Outside Controls -->
+      <div id="outsideShapesPanel" class="hidden">
+        <div class="control-group">
+          <div class="control-label"><span>Shape</span></div>
+          <select id="outsideShapeType" class="w-full p-2 rounded bg-[var(--bg-input)] border border-[var(--border)]">
+            <option value="circle">Circle</option>
+            <option value="ellipse">Ellipse</option>
+            <option value="polygon">Polygon</option>
+          </select>
+        </div>
+        <div class="control-group">
+          <div class="control-label"><span>Float</span></div>
+          <select id="outsideFloat" class="w-full p-2 rounded bg-[var(--bg-input)] border border-[var(--border)]">
+            <option value="left">Left</option>
+            <option value="right">Right</option>
+          </select>
+        </div>
+        <div class="control-group">
+          <div class="control-label"><span>Shape Margin</span><span class="control-value" id="outsideMarginVal">10px</span></div>
+          <input type="range" min="0" max="40" value="10" id="outsideMarginIn">
+        </div>
+        <div class="control-group">
+          <div class="control-label"><span>Element Size</span><span class="control-value" id="outsideSizeVal">120px</span></div>
+          <input type="range" min="60" max="180" value="120" id="outsideSizeIn">
+        </div>
+      </div>
+    </div>
+    <div class="lab-preview">
+      <div id="basicShapePreview" class="flex items-center justify-center w-full min-h-[200px]">
+        <div id="shapeDemo" style="width: 100px; height: 100px; background: var(--accent); transition: all 0.3s;"></div>
+      </div>
+      <div id="outsideShapePreview" class="hidden w-full">
+        <div class="text-justify text-sm leading-relaxed" style="background: var(--bg-input); padding: 1rem; border-radius: 8px;">
+          <div id="outsideShapeElement" style="width: 120px; height: 120px; background: var(--accent); float: left; shape-outside: circle(); margin-right: 10px; clip-path: circle();"></div>
+          <p id="outsideText">CSS shapes allow content to wrap around custom paths. This text flows around the shaped element using shape-outside property. The content automatically adjusts based on the defined shape boundary.</p>
+        </div>
+      </div>
+      <div class="code-display w-full" id="shapeOutput">/* Shape CSS */
+width: 100px;
+height: 100px;
+background: var(--accent);</div>
+    </div>
+  </div>
+</section>
+
+<!-- CLIP-PATH SECTION -->
+<section id="clippath" class="section">
+  <h2 class="section-title">Clip Path</h2>
+  <p class="section-desc">Clip elements into custom shapes using clip-path property.</p>
+
+  <div class="lab-card">
+    <div class="lab-controls">
+      <div class="tabs">
+        <button class="tab active" data-clip-mode="basic">Basic</button>
+        <button class="tab" data-clip-mode="polygon">Polygon</button>
+        <button class="tab" data-clip-mode="path">SVG Path</button>
+      </div>
+
+      <!-- Basic Clip Controls -->
+      <div id="clipBasicPanel">
+        <div class="control-group">
+          <div class="control-label"><span>Type</span></div>
+          <select id="clipType" class="w-full p-2 rounded bg-[var(--bg-input)] border border-[var(--border)]">
+            <option value="circle">Circle</option>
+            <option value="ellipse">Ellipse</option>
+            <option value="inset">Inset</option>
+          </select>
+        </div>
+        <div id="circleClipControls">
+          <div class="control-group">
+            <div class="control-label"><span>Radius</span><span class="control-value" id="clipRadiusVal">50%</span></div>
+            <input type="range" min="10" max="100" value="50" id="clipRadiusIn">
+          </div>
+          <div class="grid grid-cols-2 gap-2">
+            <div class="control-group">
+              <div class="control-label"><span>Pos X</span><span class="control-value" id="clipPosXVal">50%</span></div>
+              <input type="range" min="0" max="100" value="50" id="clipPosXIn">
+            </div>
+            <div class="control-group">
+              <div class="control-label"><span>Pos Y</span><span class="control-value" id="clipPosYVal">50%</span></div>
+              <input type="range" min="0" max="100" value="50" id="clipPosYIn">
+            </div>
+          </div>
+        </div>
+        <div id="ellipseClipControls" class="hidden">
+          <div class="grid grid-cols-2 gap-2">
+            <div class="control-group">
+              <div class="control-label"><span>Radius X</span><span class="control-value" id="clipEllipseRXVal">50%</span></div>
+              <input type="range" min="10" max="100" value="50" id="clipEllipseRXIn">
+            </div>
+            <div class="control-group">
+              <div class="control-label"><span>Radius Y</span><span class="control-value" id="clipEllipseRYVal">50%</span></div>
+              <input type="range" min="10" max="100" value="50" id="clipEllipseRYIn">
+            </div>
+          </div>
+        </div>
+        <div id="insetClipControls" class="hidden">
+          <div class="control-group">
+            <div class="control-label"><span>Top</span><span class="control-value" id="clipInsetTVal">20px</span></div>
+            <input type="range" min="0" max="100" value="20" id="clipInsetTIn">
+          </div>
+          <div class="grid grid-cols-2 gap-2">
+            <div class="control-group">
+              <div class="control-label"><span>Right</span><span class="control-value" id="clipInsetRVal">20px</span></div>
+              <input type="range" min="0" max="100" value="20" id="clipInsetRIn">
+            </div>
+            <div class="control-group">
+              <div class="control-label"><span>Bottom</span><span class="control-value" id="clipInsetBVal">20px</span></div>
+              <input type="range" min="0" max="100" value="20" id="clipInsetBIn">
+            </div>
+          </div>
+          <div class="control-group">
+            <div class="control-label"><span>Left</span><span class="control-value" id="clipInsetLVal">20px</span></div>
+            <input type="range" min="0" max="100" value="20" id="clipInsetLIn">
+          </div>
+          <div class="control-group">
+            <div class="control-label"><span>Border Radius</span><span class="control-value" id="clipInsetRadiusVal">0px</span></div>
+            <input type="range" min="0" max="50" value="0" id="clipInsetRadiusIn">
+          </div>
+        </div>
+      </div>
+
+      <!-- Polygon Clip Controls -->
+      <div id="clipPolygonPanel" class="hidden">
+        <div class="control-group">
+          <div class="control-label"><span>Preset</span></div>
+          <select id="clipPolygonPreset" class="w-full p-2 rounded bg-[var(--bg-input)] border border-[var(--border)]">
+            <option value="triangle">Triangle</option>
+            <option value="diamond">Diamond</option>
+            <option value="pentagon">Pentagon</option>
+            <option value="hexagon">Hexagon</option>
+            <option value="heptagon">Heptagon</option>
+            <option value="octagon">Octagon</option>
+            <option value="arrow">Arrow</option>
+            <option value="chevron">Chevron</option>
+            <option value="star">Star</option>
+            <option value="cross">Cross</option>
+          </select>
+        </div>
+        <div class="control-group">
+          <div class="control-label"><span>Rotation</span><span class="control-value" id="clipPolyRotVal">0deg</span></div>
+          <input type="range" min="0" max="360" value="0" id="clipPolyRotIn">
+        </div>
+      </div>
+
+      <!-- SVG Path Controls -->
+      <div id="clipPathPanel" class="hidden">
+        <div class="control-group">
+          <div class="control-label"><span>Path</span></div>
+          <textarea id="clipSvgPath" class="w-full p-2 rounded bg-[var(--bg-input)] border border-[var(--border)] font-mono text-xs h-24 resize-none">M 0 50 L 50 0 L 100 50 L 50 100 Z</textarea>
+        </div>
+        <div class="flex gap-2 mt-2">
+          <button id="clipPathHeart" class="flex-1 px-3 py-2 text-xs rounded bg-[var(--bg-input)] border border-[var(--border)] hover:border-[var(--accent)] transition-colors">Heart</button>
+          <button id="clipPathBlob" class="flex-1 px-3 py-2 text-xs rounded bg-[var(--bg-input)] border border-[var(--border)] hover:border-[var(--accent)] transition-colors">Blob</button>
+          <button id="clipPathWave" class="flex-1 px-3 py-2 text-xs rounded bg-[var(--bg-input)] border border-[var(--border)] hover:border-[var(--accent)] transition-colors">Wave</button>
+        </div>
+      </div>
+    </div>
+    <div class="lab-preview">
+      <div class="flex items-center justify-center w-full min-h-[200px]">
+        <div id="clipDemo" style="width: 180px; height: 180px; background: linear-gradient(135deg, var(--accent), #ff6a3d); transition: clip-path 0.3s;">
+          <div class="w-full h-full flex items-center justify-center text-white font-bold text-2xl select-none">CLIP</div>
+        </div>
+      </div>
+      <div class="code-display w-full" id="clipOutput">clip-path: circle(50% at 50% 50%);</div>
+      <div class="mt-4 w-full">
+        <div class="text-xs text-[var(--muted)] mb-2">Animation Preview</div>
+        <button id="animateClipBtn" class="w-full px-4 py-2 rounded bg-[var(--accent)] text-[var(--bg)] font-medium hover:opacity-90 transition-opacity">
+          Animate Clip Path
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Clip-path Comparison -->
+  <div class="lab-card mt-6">
+    <h3 class="font-bold mb-4 text-center">Clip-path vs Border-radius</h3>
+    <div class="grid grid-cols-2 gap-4">
+      <div class="text-center">
+        <div class="text-xs text-[var(--muted)] mb-2">clip-path: polygon()</div>
+        <div id="comparisonClip" style="width: 100px; height: 100px; background: var(--accent); margin: 0 auto; clip-path: polygon(50% 0%, 100% 100%, 0% 100%);"></div>
+        <div class="text-xs mt-2 font-mono">polygon(50% 0%, 100% 100%, 0% 100%)</div>
+      </div>
+      <div class="text-center">
+        <div class="text-xs text-[var(--muted)] mb-2">border-radius</div>
+        <div id="comparisonRadius" style="width: 100px; height: 100px; background: var(--accent); margin: 0 auto; border-radius: 50% 50% 0 0;"></div>
+        <div class="text-xs mt-2 font-mono">border-radius: 50% 50% 0 0</div>
+      </div>
+    </div>
+    <p class="text-xs text-[var(--muted)] text-center mt-4">clip-path can create shapes impossible with border-radius alone</p>
+  </div>
+</section>
+
+    <!-- LAYOUT: FLEX & GRID -->
+    <section id="flexbox" class="section">
+      <h2 class="section-title">Layout Systems: Flexbox</h2>
+      <p class="section-desc">Visual playground for Flexbox properties.</p>
+      
+      <div class="lab-card">
+        <div class="lab-controls">
+          <div class="control-group">
+            <label class="text-xs text-muted">justify-content</label>
+            <select id="flexJc">
+              <option>flex-start</option><option>center</option><option>flex-end</option>
+              <option>space-between</option><option>space-around</option><option>space-evenly</option>
+            </select>
+          </div>
+          <div class="control-group">
+            <label class="text-xs text-muted">align-items</label>
+            <select id="flexAi">
+              <option>stretch</option><option>flex-start</option><option>center</option><option>flex-end</option>
+            </select>
+          </div>
+          <div class="control-group">
+            <label class="text-xs text-muted">flex-wrap</label>
+            <select id="flexWrap">
+              <option>nowrap</option><option>wrap</option>
+            </select>
+          </div>
+          <div class="control-group">
+            <div class="control-label"><span>gap</span><span class="control-value" id="flexGapVal">10</span>px</div>
+            <input type="range" min="0" max="40" value="10" id="flexGap">
+          </div>
+        </div>
+        <div class="lab-preview">
+          <div id="flexContainer" class="play-ground" style="min-height: 250px;">
+             <div class="play-item">1</div>
+             <div class="play-item">2</div>
+             <div class="play-item">3</div>
+          </div>
+          <div class="code-display" id="flexOutput">display: flex;</div>
+        </div>
+      </div>
+    </section>
+    
+    <!-- GRID SECTION -->
+    <section id="grid" class="section">
+      <h2 class="section-title">Layout Systems: Grid</h2>
+      <p class="section-desc">Visual playground for Grid properties.</p>
+      
+      <div class="lab-card">
+        <div class="lab-controls">
+          <div class="control-group">
+            <label class="text-xs text-muted">grid-template-columns</label>
+            <select id="gridCols">
+              <option value="1fr 1fr">1fr 1fr</option>
+              <option value="1fr 1fr 1fr" selected>1fr 1fr 1fr</option>
+              <option value="200px 1fr">200px 1fr</option>
+              <option value="repeat(auto-fit, minmax(100px, 1fr))">auto-fit minmax</option>
+            </select>
+          </div>
+          <div class="control-group">
+            <div class="control-label"><span>gap</span><span class="control-value" id="gridGapVal">10</span>px</div>
+            <input type="range" min="0" max="40" value="10" id="gridGap">
+          </div>
+        </div>
+        <div class="lab-preview">
+          <div id="gridContainer" class="play-ground" style="display: grid; min-height: 250px;">
+             <div class="play-item">1</div>
+             <div class="play-item">2</div>
+             <div class="play-item">3</div>
+             <div class="play-item">4</div>
+             <div class="play-item">5</div>
+          </div>
+          <div class="code-display" id="gridOutput">display: grid;</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ANIMATIONS SECTION -->
+    <section id="animations" class="section">
+      <h2 class="section-title">Animations & At-Rules</h2>
+      <p class="section-desc">Keyframes and timing functions.</p>
+      
+      <div class="lab-card">
+        <div class="lab-controls">
+          <div class="control-group">
+            <label class="text-xs text-muted">animation-duration</label>
+            <select id="animDur">
+              <option value="1s">1s</option>
+              <option value="2s" selected>2s</option>
+              <option value="4s">4s</option>
+            </select>
+          </div>
+          <div class="control-group">
+            <label class="text-xs text-muted">timing-function</label>
+            <select id="animTiming">
+              <option value="linear">linear</option>
+              <option value="ease" selected>ease</option>
+              <option value="ease-in">ease-in</option>
+              <option value="ease-out">ease-out</option>
+              <option value="cubic-bezier(0.68, -0.55, 0.265, 1.55)">elastic</option>
+            </select>
+          </div>
+          <button class="btn btn-primary w-full" id="toggleAnim">Play/Pause</button>
+        </div>
+        <div class="lab-preview">
+          <div id="animTarget" style="width: 50px; height: 50px; background: var(--accent); border-radius: 50%;"></div>
+          <style>
+            @keyframes bounce {
+              0%, 100% { transform: translateY(0); }
+              50% { transform: translateY(-100px); }
+            }
+          </style>
+          <div class="code-display" id="animOutput">animation: bounce 2s ease infinite;</div>
+        </div>
+      </div>
+    </section>
+
+    <footer class="p-6 text-center text-muted text-sm border-t" style="border-color: var(--border);">
+      CSS Mastery Guide. 100% Offline Capable. No External Frameworks.
+    </footer>
+
+  </main>
+
+  <script>
+    /* CORE SYSTEM LOGIC */
+    const $ = id => document.getElementById(id);
+    
+    // --- Global State ---
+    let state = {
+      colorMode: 'rgb',
+      mathFn: 'sin',
+      gradType: 'linear',
+      animPlaying: true
+    };
+
+    // --- Mobile Menu Setup ---
+    const menuToggle = $('menuToggle');
+    const sidebar = $('sidebar');
+    const sidebarClose = $('sidebarClose');
+    const sidebarOverlay = $('sidebarOverlay');
+
+    function openSidebar() {
+      sidebar.classList.add('open');
+      sidebarOverlay.classList.add('active');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeSidebar() {
+      sidebar.classList.remove('open');
+      sidebarOverlay.classList.remove('active');
+      document.body.style.overflow = '';
+    }
+
+    menuToggle?.addEventListener('click', openSidebar);
+    sidebarClose?.addEventListener('click', closeSidebar);
+    sidebarOverlay?.addEventListener('click', closeSidebar);
+
+    // Close sidebar on escape key
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && sidebar.classList.contains('open')) {
+        closeSidebar();
+      }
+    });
+
+    // Close sidebar when clicking nav links on mobile
+    document.querySelectorAll('.nav-link').forEach(link => {
+      link.addEventListener('click', () => {
+        if (window.innerWidth < 1024) {
+          closeSidebar();
+        }
+      });
+    });
+
+    // --- Theme Toggle ---
+    $('themeToggle')?.addEventListener('click', () => {
+      const html = document.documentElement;
+      const currentTheme = html.getAttribute('data-theme');
+      const newTheme = currentTheme === 'light' ? 'dark' : 'light';
+      html.setAttribute('data-theme', newTheme);
+      $('themeToggle').querySelector('span').textContent = newTheme === 'light' ? '☀️' : '🌙';
+    });
+
+    // --- Initialization ---
+    window.addEventListener('DOMContentLoaded', () => {
+      // Ensure sidebar starts closed on mobile
+      if (window.innerWidth < 1024) {
+        closeSidebar();
+      }
+      
+      updateColors();
+      updateColorMix();
+      updateSelectorDemo();
+      updateCalc();
+      updateClamp();
+      updateMathGraph();
+      updateTransform();
+      updateGradient();
+      updateFilters();
+      updateFlex();
+      updateGrid();
+      updateAnimation();
+      initObserver();
+      initCommandPalette();
+      attachEventListeners();
+    });
+    
+    // Also close sidebar on window resize if switching to mobile
+    window.addEventListener('resize', () => {
+      if (window.innerWidth < 1024 && sidebar.classList.contains('open')) {
+        // Sidebar is open on mobile view
+      } else if (window.innerWidth >= 1024) {
+        // Desktop view - ensure overlay is hidden
+        closeSidebar();
+      }
+    });
+
+    // --- Attach All Event Listeners ---
+    function attachEventListeners() {
+      // Selector buttons
+      document.querySelectorAll('[data-selector]').forEach(btn => {
+        btn.addEventListener('click', () => {
+          $('selectorInput').value = btn.dataset.selector;
+          updateSelectorDemo();
+        });
+      });
+
+      // Selector input
+      $('selectorInput')?.addEventListener('input', updateSelectorDemo);
+
+      // Color mode tabs
+      document.querySelectorAll('[data-color-mode]').forEach(btn => {
+        btn.addEventListener('click', () => {
+          state.colorMode = btn.dataset.colorMode;
+          btn.parentElement.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+          btn.classList.add('active');
+          $('rgbPanel').classList.toggle('hidden', state.colorMode !== 'rgb');
+          $('hslPanel').classList.toggle('hidden', state.colorMode !== 'hsl');
+          $('oklchPanel').classList.toggle('hidden', state.colorMode !== 'oklch');
+          updateColors();
+        });
+      });
+
+      // Color sliders
+      ['rIn', 'gIn', 'bIn', 'hIn', 'sIn', 'lIn', 'lchLIn', 'lchCIn', 'lchHIn'].forEach(id => {
+        $(id)?.addEventListener('input', updateColors);
+      });
+
+      // Color mix
+      ['mix1', 'mix2', 'mixP'].forEach(id => {
+        $(id)?.addEventListener('input', updateColorMix);
+      });
+
+      // Math functions
+      ['calcIn', 'calcContainer'].forEach(id => {
+        $(id)?.addEventListener('input', updateCalc);
+      });
+
+      ['clampMin', 'clampVal', 'clampMax'].forEach(id => {
+        $(id)?.addEventListener('input', updateClamp);
+      });
+
+      document.querySelectorAll('[data-math-fn]').forEach(btn => {
+        btn.addEventListener('click', () => {
+          state.mathFn = btn.dataset.mathFn;
+          btn.parentElement.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+          btn.classList.add('active');
+          updateMathGraph();
+        });
+      });
+
+      $('mathDeg')?.addEventListener('input', updateMathGraph);
+
+      // Transforms
+      ['rxIn', 'ryIn', 'rzIn', 'scIn', 'perspIn'].forEach(id => {
+        $(id)?.addEventListener('input', updateTransform);
+      });
+
+      // Gradients
+      document.querySelectorAll('[data-grad-type]').forEach(btn => {
+        btn.addEventListener('click', () => {
+          state.gradType = btn.dataset.gradType;
+          btn.parentElement.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+          btn.classList.add('active');
+          updateGradient();
+        });
+      });
+
+      ['gC1', 'gC2', 'gAng'].forEach(id => {
+        $(id)?.addEventListener('input', updateGradient);
+      });
+
+      // Filters
+      ['fBlur', 'fBright', 'fContrast', 'fHue'].forEach(id => {
+        $(id)?.addEventListener('input', updateFilters);
+      });
+
+      // Layouts
+      ['flexJc', 'flexAi', 'flexWrap', 'flexGap'].forEach(id => {
+        $(id)?.addEventListener('change', updateFlex);
+        $(id)?.addEventListener('input', updateFlex);
+      });
+
+      ['gridCols', 'gridGap'].forEach(id => {
+        $(id)?.addEventListener('change', updateGrid);
+        $(id)?.addEventListener('input', updateGrid);
+      });
+
+      // Animations
+      ['animDur', 'animTiming'].forEach(id => {
+        $(id)?.addEventListener('change', updateAnimation);
+      });
+
+      $('toggleAnim')?.addEventListener('click', () => {
+        const el = $('animTarget');
+        el.style.animationPlayState = (el.style.animationPlayState === 'paused') ? 'running' : 'paused';
+      });
+    }
+
+    // --- Logic: Selectors ---
+    function updateSelectorDemo() {
+      const sel = $('selectorInput').value;
+      const out = $('selectorOutput');
+      const demo = $('selectorDemo');
+      
+      demo.querySelectorAll('.selector-item').forEach(el => el.classList.remove('selector-highlight'));
+      
+      try {
+        const matches = demo.querySelectorAll(sel);
+        matches.forEach(el => el.classList.add('selector-highlight'));
+        out.textContent = `Matched ${matches.length} elements: ${sel}`;
+        out.style.color = 'var(--accent)';
+      } catch(e) {
+        out.textContent = "Invalid Selector Syntax";
+        out.style.color = 'var(--accent-secondary)';
+      }
+    }
+
+    // --- Logic: Colors ---
+    function updateColors() {
+      const val = (id) => $(id)?.value || 0;
+      let colorStr = '';
+      
+      if(state.colorMode === 'rgb') {
+        const r = val('rIn'), g = val('gIn'), b = val('bIn');
+        $('rVal').textContent = r; $('gVal').textContent = g; $('bVal').textContent = b;
+        colorStr = `rgb(${r}, ${g}, ${b})`;
+      } 
+      else if(state.colorMode === 'hsl') {
+        const h = val('hIn'), s = val('sIn'), l = val('lIn');
+        $('hVal').textContent = h; $('sVal').textContent = s; $('lVal').textContent = l;
+        colorStr = `hsl(${h}, ${s}%, ${l}%)`;
+      }
+      else if(state.colorMode === 'oklch') {
+        const l = val('lchLIn'), c = val('lchCIn'), h = val('lchHIn');
+        $('lchLVal').textContent = l; $('lchCVal').textContent = c; $('lchHVal').textContent = h;
+        colorStr = `oklch(${l}% ${c} ${h})`;
+      }
+      
+      $('colorSwatch').style.background = colorStr;
+      $('colorOutput').textContent = colorStr;
+    }
+
+    function updateColorMix() {
+      const c1 = $('mix1')?.value || '#00e5a0';
+      const c2 = $('mix2')?.value || '#ff6a3d';
+      const p = $('mixP')?.value || 50;
+      
+      $('mixPVal').textContent = p + '%';
+      $('mixSwatch1').style.background = c1;
+      $('mixSwatch2').style.background = c2;
+      
+      const mix = `color-mix(in srgb, ${c1} ${p}%, ${c2})`;
+      $('mixSwatchRes').style.background = mix;
+      $('mixOutput').textContent = mix;
+    }
+
+    // --- Logic: Math ---
+    function updateCalc() {
+      const formula = $('calcIn')?.value || '100% - 50px';
+      const w = $('calcContainer')?.value || 400;
+      $('calcContainerBox').style.width = w + 'px';
+      
+      try {
+        $('calcResult').style.width = `calc(${formula})`;
+        $('calcOutput').textContent = `width: calc(${formula});`;
+      } catch(e) {
+        $('calcOutput').textContent = "Error";
+      }
+    }
+
+    function updateClamp() {
+      const min = $('clampMin')?.value || '1rem';
+      const v = $('clampVal')?.value || '5vw';
+      const max = $('clampMax')?.value || '3rem';
+      const rule = `clamp(${min}, ${v}, ${max})`;
+      
+      $('clampText').style.fontSize = rule;
+      $('clampOutput').textContent = `font-size: ${rule};`;
+    }
+
+    function updateMathGraph() {
+      const deg = $('mathDeg')?.value || 0;
+      const rad = deg * (Math.PI / 180);
+      $('mathDegVal').textContent = deg;
+      
+      const canvas = $('mathCanvas');
+      if (!canvas) return;
+      
+      const ctx = canvas.getContext('2d');
+      const w = canvas.width = canvas.offsetWidth;
+      const h = canvas.height = canvas.offsetHeight;
+      
+      ctx.clearRect(0, 0, w, h);
+      ctx.strokeStyle = '#888';
+      ctx.lineWidth = 1;
+      
+      ctx.beginPath();
+      ctx.moveTo(0, h/2);
+      ctx.lineTo(w, h/2);
+      ctx.stroke();
+      
+      ctx.strokeStyle = '#00e5a0';
+      ctx.lineWidth = 2;
+      ctx.beginPath();
+      
+      const fn = state.mathFn === 'sin' ? Math.sin : Math.cos;
+      
+      for(let i=0; i<=w; i++) {
+        const x = (i/w) * 360 * (Math.PI/180);
+        const y = h/2 - fn(x) * (h/2 - 20);
+        if(i===0) ctx.moveTo(i, y);
+        else ctx.lineTo(i, y);
+      }
+      ctx.stroke();
+      
+      const dotY = h/2 - fn(rad) * (h/2 - 20);
+      ctx.fillStyle = '#ff6a3d';
+      ctx.beginPath();
+      ctx.arc((deg/360)*w, dotY, 6, 0, Math.PI * 2);
+      ctx.fill();
+      
+      $('mathOutput').textContent = `transform: translateY(calc(${state.mathFn}(${deg}deg) * 50px));`;
+    }
+
+    // --- Logic: Transforms ---
+    function updateTransform() {
+      const rx = $('rxIn')?.value || 0;
+      const ry = $('ryIn')?.value || 0;
+      const rz = $('rzIn')?.value || 0;
+      const s = $('scIn')?.value || 1;
+      const p = $('perspIn')?.value || 800;
+      
+      $('rxVal').textContent = rx;
+      $('ryVal').textContent = ry;
+      $('rzVal').textContent = rz;
+      $('scVal').textContent = s;
+      $('perspVal').textContent = p;
+      
+      const stage = $('transformStage');
+      const box = $('transformBox');
+      stage.style.perspective = p + 'px';
+      
+      const transformStr = `rotateX(${rx}deg) rotateY(${ry}deg) rotateZ(${rz}deg) scale(${s})`;
+      box.style.transform = transformStr;
+      
+      $('transformOutput').textContent = `transform: ${transformStr};`;
+    }
+
+    // --- Logic: Gradients ---
+    function updateGradient() {
+      const c1 = $('gC1')?.value || '#00e5a0';
+      const c2 = $('gC2')?.value || '#ff6a3d';
+      const ang = $('gAng')?.value || 90;
+      $('gAngVal').textContent = ang;
+      
+      let grad = '';
+      if(state.gradType === 'linear') {
+        grad = `linear-gradient(${ang}deg, ${c1}, ${c2})`;
+      } else if(state.gradType === 'radial') {
+        grad = `radial-gradient(circle, ${c1}, ${c2})`;
+      } else {
+        grad = `conic-gradient(from ${ang}deg, ${c1}, ${c2}, ${c1})`;
+      }
+      
+      $('gradBox').style.background = grad;
+      $('gradOutput').textContent = grad;
+    }
+
+    // --- Logic: Filters ---
+    function updateFilters() {
+      const b = $('fBlur')?.value || 0;
+      const br = $('fBright')?.value || 100;
+      const c = $('fContrast')?.value || 100;
+      const h = $('fHue')?.value || 0;
+      
+      $('fBlurVal').textContent = b;
+      $('fBrightVal').textContent = br;
+      $('fContrastVal').textContent = c;
+      $('fHueVal').textContent = h;
+      
+      const rule = `blur(${b}px) brightness(${br}%) contrast(${c}%) hue-rotate(${h}deg)`;
+      $('filterBox').style.filter = rule;
+      $('filterOutput').textContent = `filter: ${rule};`;
+    }
+
+    // --- Logic: Layouts ---
+    function updateFlex() {
+      const jc = $('flexJc')?.value || 'flex-start';
+      const ai = $('flexAi')?.value || 'stretch';
+      const wrap = $('flexWrap')?.value || 'nowrap';
+      const gap = $('flexGap')?.value || 10;
+      
+      const c = $('flexContainer');
+      c.style.justifyContent = jc;
+      c.style.alignItems = ai;
+      c.style.flexWrap = wrap;
+      c.style.gap = gap + 'px';
+      
+      $('flexGapVal').textContent = gap;
+      $('flexOutput').textContent = `display: flex; justify-content: ${jc}; align-items: ${ai}; gap: ${gap}px;`;
+    }
+
+    function updateGrid() {
+      const cols = $('gridCols')?.value || '1fr 1fr 1fr';
+      const gap = $('gridGap')?.value || 10;
+      
+      const c = $('gridContainer');
+      c.style.gridTemplateColumns = cols;
+      c.style.gap = gap + 'px';
+      
+      $('gridGapVal').textContent = gap;
+      $('gridOutput').textContent = `display: grid; grid-template-columns: ${cols}; gap: ${gap}px;`;
+    }
+
+    // --- Logic: Animations ---
+    function updateAnimation() {
+      const dur = $('animDur')?.value || '2s';
+      const timing = $('animTiming')?.value || 'ease';
+      
+      const rule = `bounce ${dur} ${timing} infinite`;
+      $('animTarget').style.animation = rule;
+      $('animOutput').textContent = `animation: ${rule};`;
+    }
+
+    // --- System: Scrollspy ---
+    function initObserver() {
+      const sections = document.querySelectorAll('section');
+      const navLinks = document.querySelectorAll('.nav-link');
+      
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if(entry.isIntersecting) {
+            const id = entry.target.id;
+            navLinks.forEach(link => {
+              link.classList.remove('active');
+              if(link.getAttribute('href') === '#' + id) link.classList.add('active');
+            });
+          }
+        });
+      }, { threshold: 0.3 });
+      
+      sections.forEach(sec => { if (sec.id) observer.observe(sec); });
+    }
+
+    // --- Command Palette ---
+    function initCommandPalette() {
+      const data = [
+        { name: "Selectors", href: "#selectors" },
+        { name: "Color Functions", href: "#colors" },
+        { name: "Math Functions", href: "#math" },
+        { name: "Transforms", href: "#transforms" },
+        { name: "Gradients", href: "#gradients" },
+        { name: "Filters", href: "#filters" },
+        { name: "Flexbox Lab", href: "#flexbox" },
+        { name: "Grid Lab", href: "#grid" },
+        { name: "Animations", href: "#animations" }
+      ];
+
+      window.addEventListener('keydown', (e) => {
+        if((e.ctrlKey || e.metaKey) && e.key === 'k') {
+          e.preventDefault();
+          $('commandPalette').classList.add('open');
+          $('commandInput').focus();
+          renderResults('');
+        }
+        if(e.key === 'Escape') {
+          $('commandPalette').classList.remove('open');
+        }
+      });
+
+      $('searchBtn')?.addEventListener('click', () => {
+        $('commandPalette').classList.add('open');
+        $('commandInput').focus();
+        renderResults('');
+      });
+
+      $('commandInput')?.addEventListener('input', (e) => renderResults(e.target.value));
+      
+      $('commandPalette')?.addEventListener('click', (e) => {
+        if(e.target.id === 'commandPalette') e.target.classList.remove('open');
+      });
+
+      function renderResults(query) {
+        const filtered = data.filter(i => i.name.toLowerCase().includes(query.toLowerCase()));
+        const html = filtered.map(i => 
+          `<div class="p-2 cursor-pointer" style="cursor: pointer;" onclick="window.location='${i.href}'; document.getElementById('commandPalette').classList.remove('open');">${i.name}</div>`
+        ).join('');
+        $('commandResults').innerHTML = html || '<div class="p-2 text-muted">No results found</div>';
+      }
+    }
+
+
+
+    // ==================== SHAPES SECTION ====================
+const shapeTypeSelect = document.getElementById('shapeType');
+const shapeSizeIn = document.getElementById('shapeSizeIn');
+const shapeRotIn = document.getElementById('shapeRotIn');
+const shapeRadiusIn = document.getElementById('shapeRadiusIn');
+const shapeDemo = document.getElementById('shapeDemo');
+const shapeOutput = document.getElementById('shapeOutput');
+const basicShapePreview = document.getElementById('basicShapePreview');
+const outsideShapePreview = document.getElementById('outsideShapePreview');
+
+// Shape tabs
+document.querySelectorAll('[data-shape-mode]').forEach(tab => {
+  tab.addEventListener('click', () => {
+    document.querySelectorAll('[data-shape-mode]').forEach(t => t.classList.remove('active'));
+    tab.classList.add('active');
+    
+    const mode = tab.dataset.shapeMode;
+    document.getElementById('basicShapesPanel').classList.toggle('hidden', mode !== 'basic');
+    document.getElementById('outsideShapesPanel').classList.toggle('hidden', mode !== 'outside');
+    basicShapePreview.classList.toggle('hidden', mode !== 'basic');
+    outsideShapePreview.classList.toggle('hidden', mode !== 'outside');
+    
+    if (mode === 'basic') updateShape();
+    else updateShapeOutside();
+  });
+});
+
+function updateShape() {
+  const type = shapeTypeSelect.value;
+  const size = shapeSizeIn.value;
+  const rot = shapeRotIn.value;
+  const radius = shapeRadiusIn.value;
+  
+  document.getElementById('shapeSizeVal').textContent = size + 'px';
+  document.getElementById('shapeRotVal').textContent = rot + 'deg';
+  document.getElementById('shapeRadiusVal').textContent = radius + 'px';
+  
+  let styles = `width: ${size}px; height: ${size}px; background: var(--accent); transform: rotate(${rot}deg);`;
+  let clipPath = '';
+  
+  switch(type) {
+    case 'circle':
+      styles += ` border-radius: 50%;`;
+      break;
+    case 'ellipse':
+      styles += ` border-radius: 50%; width: ${size * 1.5}px;`;
+      break;
+    case 'triangle':
+      clipPath = 'polygon(50% 0%, 100% 100%, 0% 100%)';
+      break;
+    case 'polygon':
+      clipPath = 'polygon(50% 0%, 100% 38%, 82% 100%, 18% 100%, 0% 38%)';
+      break;
+    case 'star':
+      clipPath = 'polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%)';
+      break;
+  }
+  
+  if (clipPath) {
+    styles += ` clip-path: ${clipPath};`;
+  }
+  
+  shapeDemo.style.cssText = styles;
+  
+  shapeOutput.innerHTML = `/* ${type.charAt(0).toUpperCase() + type.slice(1)} Shape */
+width: ${size}px;
+height: ${size}px;
+background: var(--accent);
+transform: rotate(${rot}deg);${clipPath ? `\nclip-path: ${clipPath};` : ''}${type === 'circle' ? '\nborder-radius: 50%;' : ''}`;
+}
+
+shapeTypeSelect.addEventListener('change', updateShape);
+shapeSizeIn.addEventListener('input', updateShape);
+shapeRotIn.addEventListener('input', updateShape);
+shapeRadiusIn.addEventListener('input', updateShape);
+
+// Shape Outside
+const outsideShapeType = document.getElementById('outsideShapeType');
+const outsideFloat = document.getElementById('outsideFloat');
+const outsideMarginIn = document.getElementById('outsideMarginIn');
+const outsideSizeIn = document.getElementById('outsideSizeIn');
+const outsideShapeElement = document.getElementById('outsideShapeElement');
+
+function updateShapeOutside() {
+  const type = outsideShapeType.value;
+  const float = outsideFloat.value;
+  const margin = outsideMarginIn.value;
+  const size = outsideSizeIn.value;
+  
+  document.getElementById('outsideMarginVal').textContent = margin + 'px';
+  document.getElementById('outsideSizeVal').textContent = size + 'px';
+  
+  let shapeOutside = '';
+  let clipPath = '';
+  
+  switch(type) {
+    case 'circle':
+      shapeOutside = 'circle()';
+      clipPath = 'circle()';
+      break;
+    case 'ellipse':
+      shapeOutside = 'ellipse()';
+      clipPath = 'ellipse()';
+      break;
+    case 'polygon':
+      shapeOutside = 'polygon(0 0, 100% 0, 100% 100%, 0 100%)';
+      clipPath = 'polygon(0 0, 100% 0, 100% 100%, 0 100%)';
+      break;
+  }
+  
+  outsideShapeElement.style.cssText = `
+    width: ${size}px; 
+    height: ${size}px; 
+    background: var(--accent); 
+    float: ${float}; 
+    shape-outside: ${shapeOutside}; 
+    margin-${float === 'left' ? 'right' : 'left'}: ${margin}px; 
+    clip-path: ${clipPath};
+  `;
+  
+  document.getElementById('shapeOutput').textContent = `shape-outside: ${shapeOutside};
+float: ${float};
+shape-margin: ${margin}px;`;
+}
+
+outsideShapeType.addEventListener('change', updateShapeOutside);
+outsideFloat.addEventListener('change', updateShapeOutside);
+outsideMarginIn.addEventListener('input', updateShapeOutside);
+outsideSizeIn.addEventListener('input', updateShapeOutside);
+
+// ==================== CLIP-PATH SECTION ====================
+const clipType = document.getElementById('clipType');
+const clipDemo = document.getElementById('clipDemo');
+const clipOutput = document.getElementById('clipOutput');
+
+// Clip tabs
+document.querySelectorAll('[data-clip-mode]').forEach(tab => {
+  tab.addEventListener('click', () => {
+    document.querySelectorAll('[data-clip-mode]').forEach(t => t.classList.remove('active'));
+    tab.classList.add('active');
+    
+    const mode = tab.dataset.clipMode;
+    document.getElementById('clipBasicPanel').classList.toggle('hidden', mode !== 'basic');
+    document.getElementById('clipPolygonPanel').classList.toggle('hidden', mode !== 'polygon');
+    document.getElementById('clipPathPanel').classList.toggle('hidden', mode !== 'path');
+    
+    if (mode === 'basic') updateClipBasic();
+    else if (mode === 'polygon') updateClipPolygon();
+    else updateClipPath();
+  });
+});
+
+function updateClipBasic() {
+  const type = clipType.value;
+  
+  document.getElementById('circleClipControls').classList.toggle('hidden', type !== 'circle');
+  document.getElementById('ellipseClipControls').classList.toggle('hidden', type !== 'ellipse');
+  document.getElementById('insetClipControls').classList.toggle('hidden', type !== 'inset');
+  
+  let clipPath = '';
+  
+  if (type === 'circle') {
+    const radius = document.getElementById('clipRadiusIn').value;
+    const posX = document.getElementById('clipPosXIn').value;
+    const posY = document.getElementById('clipPosYIn').value;
+    
+    document.getElementById('clipRadiusVal').textContent = radius + '%';
+    document.getElementById('clipPosXVal').textContent = posX + '%';
+    document.getElementById('clipPosYVal').textContent = posY + '%';
+    
+    clipPath = `circle(${radius}% at ${posX}% ${posY}%)`;
+  } else if (type === 'ellipse') {
+    const rx = document.getElementById('clipEllipseRXIn').value;
+    const ry = document.getElementById('clipEllipseRYIn').value;
+    
+    document.getElementById('clipEllipseRXVal').textContent = rx + '%';
+    document.getElementById('clipEllipseRYVal').textContent = ry + '%';
+    
+    clipPath = `ellipse(${rx}% ${ry}% at 50% 50%)`;
+  } else if (type === 'inset') {
+    const t = document.getElementById('clipInsetTIn').value;
+    const r = document.getElementById('clipInsetRIn').value;
+    const b = document.getElementById('clipInsetBIn').value;
+    const l = document.getElementById('clipInsetLIn').value;
+    const radius = document.getElementById('clipInsetRadiusIn').value;
+    
+    document.getElementById('clipInsetTVal').textContent = t + 'px';
+    document.getElementById('clipInsetRVal').textContent = r + 'px';
+    document.getElementById('clipInsetBVal').textContent = b + 'px';
+    document.getElementById('clipInsetLVal').textContent = l + 'px';
+    document.getElementById('clipInsetRadiusVal').textContent = radius + 'px';
+    
+    clipPath = `inset(${t}px ${r}px ${b}px ${l}px round ${radius}px)`;
+  }
+  
+  clipDemo.style.clipPath = clipPath;
+  clipOutput.textContent = `clip-path: ${clipPath};`;
+}
+
+clipType.addEventListener('change', updateClipBasic);
+['clipRadiusIn', 'clipPosXIn', 'clipPosYIn', 'clipEllipseRXIn', 'clipEllipseRYIn', 'clipInsetTIn', 'clipInsetRIn', 'clipInsetBIn', 'clipInsetLIn', 'clipInsetRadiusIn'].forEach(id => {
+  document.getElementById(id).addEventListener('input', updateClipBasic);
+});
+
+// Polygon presets
+const polygonPresets = {
+  triangle: 'polygon(50% 0%, 100% 100%, 0% 100%)',
+  diamond: 'polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%)',
+  pentagon: 'polygon(50% 0%, 100% 38%, 82% 100%, 18% 100%, 0% 38%)',
+  hexagon: 'polygon(25% 0%, 75% 0%, 100% 50%, 75% 100%, 25% 100%, 0% 50%)',
+  heptagon: 'polygon(50% 0%, 90% 20%, 100% 62%, 75% 100%, 25% 100%, 0% 62%, 10% 20%)',
+  octagon: 'polygon(30% 0%, 70% 0%, 100% 30%, 100% 70%, 70% 100%, 30% 100%, 0% 70%, 0% 30%)',
+  arrow: 'polygon(0% 20%, 60% 20%, 60% 0%, 100% 50%, 60% 100%, 60% 80%, 0% 80%)',
+  chevron: 'polygon(75% 0%, 100% 50%, 75% 100%, 0% 100%, 25% 50%, 0% 0%)',
+  star: 'polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%)',
+  cross: 'polygon(35% 0%, 65% 0%, 65% 35%, 100% 35%, 100% 65%, 65% 65%, 65% 100%, 35% 100%, 35% 65%, 0% 65%, 0% 35%, 35% 35%)'
+};
+
+function updateClipPolygon() {
+  const preset = document.getElementById('clipPolygonPreset').value;
+  const rot = document.getElementById('clipPolyRotIn').value;
+  
+  document.getElementById('clipPolyRotVal').textContent = rot + 'deg';
+  
+  const clipPath = polygonPresets[preset];
+  clipDemo.style.clipPath = clipPath;
+  clipDemo.style.transform = `rotate(${rot}deg)`;
+  clipOutput.textContent = `clip-path: ${clipPath};`;
+}
+
+document.getElementById('clipPolygonPreset').addEventListener('change', updateClipPolygon);
+document.getElementById('clipPolyRotIn').addEventListener('input', updateClipPolygon);
+
+// SVG Path presets
+const svgPaths = {
+  heart: 'M 50 0 C 20 0 0 30 0 50 C 0 80 50 100 50 100 C 50 100 100 80 100 50 C 100 30 80 0 50 0 Z',
+  blob: 'M 40 10 Q 90 10 90 50 Q 90 90 50 90 Q 10 90 10 50 Q 10 10 40 10 Z',
+  wave: 'M 0 50 Q 25 0 50 50 Q 75 100 100 50 L 100 100 L 0 100 Z'
+};
+
+function updateClipPath() {
+  const path = document.getElementById('clipSvgPath').value;
+  clipDemo.style.clipPath = `path('${path}')`;
+  clipOutput.textContent = `clip-path: path('${path}');`;
+}
+
+document.getElementById('clipSvgPath').addEventListener('input', updateClipPath);
+document.getElementById('clipPathHeart').addEventListener('click', () => {
+  document.getElementById('clipSvgPath').value = svgPaths.heart;
+  updateClipPath();
+});
+document.getElementById('clipPathBlob').addEventListener('click', () => {
+  document.getElementById('clipSvgPath').value = svgPaths.blob;
+  updateClipPath();
+});
+document.getElementById('clipPathWave').addEventListener('click', () => {
+  document.getElementById('clipSvgPath').value = svgPaths.wave;
+  updateClipPath();
+});
+
+// Animate button
+let clipAnimating = false;
+document.getElementById('animateClipBtn').addEventListener('click', function() {
+  if (clipAnimating) return;
+  clipAnimating = true;
+  this.textContent = 'Animating...';
+  
+  const shapes = [
+    'circle(50%)',
+    'polygon(50% 0%, 100% 100%, 0% 100%)',
+    'polygon(50% 0%, 100% 38%, 82% 100%, 18% 100%, 0% 38%)',
+    'polygon(25% 0%, 75% 0%, 100% 50%, 75% 100%, 25% 100%, 0% 50%)',
+    'circle(50%)'
+  ];
+  
+  let i = 0;
+  const interval = setInterval(() => {
+    clipDemo.style.clipPath = shapes[i];
+    clipOutput.textContent = `clip-path: ${shapes[i]};`;
+    i++;
+    if (i >= shapes.length) {
+      clearInterval(interval);
+      clipAnimating = false;
+      document.getElementById('animateClipBtn').textContent = 'Animate Clip Path';
+    }
+  }, 500);
+});
+
+// Initialize
+updateShape();
+updateClipBasic();
+
+
+/* ===== SYNTAX & CASCADE COMPLETE SCRIPT ===== */
+
+(function() {
+  'use strict';
+  
+  const $ = id => document.getElementById(id);
+
+  // ===== CSS SYNTAX ANATOMY =====
+  function initSyntax() {
+    const syntaxPart = $('syntaxPart');
+    const explanation = $('syntaxExplanation');
+    
+    if (!syntaxPart || !explanation) return;
+    
+    const explanations = {
+      selector: 'The <strong>selector</strong> targets HTML elements to style. ".button" selects all elements with class="button". Can be elements (div), classes (.name), IDs (#name), or combinations.',
+      property: 'The <strong>property</strong> is the CSS characteristic you want to change. Common properties include color, font-size, margin, padding, display, position, etc.',
+      value: 'The <strong>value</strong> assigns a specific setting to the property. Values can be keywords (bold), numbers (10px), colors (#00e5a0), or functions (calc(), rgb()).',
+      declaration: 'A <strong>declaration</strong> is a property-value pair. Example: "color: blue;" is one declaration. Multiple declarations form a declaration block.',
+      rule: 'A complete <strong>CSS rule</strong> consists of a selector and a declaration block (enclosed in curly braces). This is the fundamental unit of CSS.'
+    };
+
+    function updateSyntaxHighlight() {
+      const selected = syntaxPart.value;
+      
+      // Remove all highlights
+      document.querySelectorAll('.syntax-part').forEach(el => {
+        el.style.background = 'transparent';
+        el.style.color = 'inherit';
+        el.style.padding = '0';
+        el.style.borderRadius = '0';
+      });
+
+      // Add highlight to selected parts
+      if (selected === 'selector') {
+        const sel = $('syntaxSelector');
+        if (sel) {
+          sel.style.background = 'rgba(0, 229, 160, 0.2)';
+          sel.style.padding = '2px 6px';
+          sel.style.borderRadius = '4px';
+        }
+      } else if (selected === 'property') {
+        document.querySelectorAll('[data-part="property"]').forEach(el => {
+          el.style.background = 'rgba(59, 130, 246, 0.2)';
+          el.style.padding = '2px 6px';
+          el.style.borderRadius = '4px';
+        });
+      } else if (selected === 'value') {
+        document.querySelectorAll('[data-part="value"]').forEach(el => {
+          el.style.background = 'rgba(255, 106, 61, 0.2)';
+          el.style.padding = '2px 6px';
+          el.style.borderRadius = '4px';
+        });
+      } else if (selected === 'declaration') {
+        document.querySelectorAll('.syntax-part').forEach(el => {
+          if (el.dataset.part === 'property' || el.dataset.part === 'value') {
+            el.style.background = 'rgba(168, 85, 247, 0.2)';
+            el.style.padding = '2px 6px';
+            el.style.borderRadius = '4px';
+          }
+        });
+      } else if (selected === 'rule') {
+        document.querySelectorAll('.syntax-part').forEach(el => {
+          el.style.background = 'rgba(0, 229, 160, 0.1)';
+          el.style.padding = '2px 6px';
+          el.style.borderRadius = '4px';
+        });
+      }
+
+      explanation.innerHTML = explanations[selected];
+    }
+
+    syntaxPart.addEventListener('change', updateSyntaxHighlight);
+    
+    // Click on parts
+    document.querySelectorAll('.syntax-part').forEach(el => {
+      el.style.cursor = 'pointer';
+      el.addEventListener('click', () => {
+        const part = el.dataset.part;
+        syntaxPart.value = part;
+        updateSyntaxHighlight();
+      });
+    });
+
+    updateSyntaxHighlight();
+  }
+
+  // ===== THE CASCADE =====
+  function initCascade() {
+    const userAgent = $('cascadeUserAgent');
+    const user = $('cascadeUser');
+    const author = $('cascadeAuthor');
+    const important = $('cascadeImportant');
+
+    if (!userAgent || !user || !author || !important) return;
+
+    function updateCascade() {
+      const box = $('cascadeBox');
+      const code = $('cascadeCode');
+      
+      if (!box || !code) return;
+
+      let bgColor = '#1a1a28';
+      let textColor = '#e4e4eb';
+      let appliedStyles = [];
+
+      // User Agent styles
+      if (userAgent.checked) {
+        bgColor = '#d1d5db';
+        textColor = '#000000';
+        appliedStyles.push('/* User Agent Styles */\nbackground: #d1d5db;\ncolor: #000000;');
+      }
+
+      // User styles
+      if (user.checked) {
+        bgColor = '#3b82f6';
+        textColor = '#ffffff';
+        appliedStyles.push('/* User Styles */\nbackground: #3b82f6;\ncolor: #ffffff;');
+      }
+
+      // Author styles
+      if (author.checked) {
+        bgColor = '#00e5a0';
+        textColor = '#000000';
+        appliedStyles.push('/* Author Styles */\nbackground: #00e5a0;\ncolor: #000000;');
+      }
+
+      // !important override
+      if (important.checked) {
+        bgColor = '#ff6a3d';
+        textColor = '#ffffff';
+        appliedStyles.push('/* Author !important */\nbackground: #ff6a3d !important;\ncolor: #ffffff !important;');
+      }
+
+      box.style.background = bgColor;
+      box.style.color = textColor;
+      code.textContent = appliedStyles.length > 0 ? appliedStyles.join('\n\n') : '/* No styles applied */';
+    }
+
+    [userAgent, user, author, important].forEach(el => {
+      el.addEventListener('change', updateCascade);
+    });
+
+    updateCascade();
+  }
+
+  // ===== SPECIFICITY CALCULATOR =====
+  function initSpecificity() {
+    const calculateBtn = $('calculateSpecificity');
+    
+    if (!calculateBtn) return;
+
+    function calculateSpecificity(selector) {
+      selector = selector.trim();
+
+      let inline = 0;
+      let ids = 0;
+      let classes = 0;
+      let elements = 0;
+
+      // Count IDs
+      ids = (selector.match(/#[a-zA-Z][\w-]*/g) || []).length;
+
+      // Count classes
+      classes += (selector.match(/\.[a-zA-Z][\w-]*/g) || []).length;
+      
+      // Count attributes
+      classes += (selector.match(/\[/g) || []).length;
+      
+      // Count pseudo-classes (but not pseudo-elements)
+      const pseudoClasses = (selector.match(/:[a-z-]+/g) || []).filter(p => !p.startsWith('::'));
+      classes += pseudoClasses.length;
+
+      // Count elements
+      const elementMatch = selector.match(/\b[a-z]+\b/gi) || [];
+      elements = elementMatch.filter(e => !['not', 'is', 'where', 'has'].includes(e.toLowerCase())).length;
+      
+      // Count pseudo-elements
+      elements += (selector.match(/::/g) || []).length;
+
+      return { inline, ids, classes, elements, selector };
+    }
+
+    function displayResults() {
+      const sel1 = $('specificity1')?.value || '';
+      const sel2 = $('specificity2')?.value || '';
+      const sel3 = $('specificity3')?.value || '';
+
+      const results = [sel1, sel2, sel3]
+        .filter(s => s.trim())
+        .map(s => calculateSpecificity(s));
+
+      // Sort by specificity
+      results.sort((a, b) => {
+        if (a.inline !== b.inline) return b.inline - a.inline;
+        if (a.ids !== b.ids) return b.ids - a.ids;
+        if (a.classes !== b.classes) return b.classes - a.classes;
+        return b.elements - a.elements;
+      });
+
+      const resultsDiv = $('specificityResults');
+      if (!resultsDiv) return;
+
+      if (results.length === 0) {
+        resultsDiv.innerHTML = '<div class="text-center text-muted">Enter selectors and click Calculate</div>';
+        return;
+      }
+
+      resultsDiv.innerHTML = results.map((r, i) => {
+        const specificity = `(${r.inline},${r.ids},${r.classes},${r.elements})`;
+        const rank = i === 0 ? '🥇 Highest' : i === 1 ? '🥈 Second' : '🥉 Third';
+        const color = i === 0 ? 'var(--accent)' : i === 1 ? '#3b82f6' : '#ff6a3d';
+        
+        return `
+          <div class="p-4 rounded" style="background: var(--bg-input); border-left: 4px solid ${color};">
+            <div class="flex justify-between items-center mb-2">
+              <span class="font-mono font-bold">${r.selector}</span>
+              <span class="text-xs">${rank}</span>
+            </div>
+            <div class="text-sm">
+              <span class="font-mono" style="color: ${color};">${specificity}</span>
+              <span class="text-xs text-muted ml-2">
+                ${r.ids} ID${r.ids !== 1 ? 's' : ''}, 
+                ${r.classes} class${r.classes !== 1 ? 'es' : ''}, 
+                ${r.elements} element${r.elements !== 1 ? 's' : ''}
+              </span>
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    calculateBtn.addEventListener('click', displayResults);
+    displayResults();
+  }
+
+  // ===== INHERITANCE =====
+  function initInheritance() {
+    const fontSize = $('inheritFontSize');
+    const color = $('inheritColor');
+    const border = $('inheritBorder');
+
+    if (!fontSize || !color || !border) return;
+
+    function updateInheritance() {
+      const parent = $('inheritParent');
+      const child = $('inheritChild');
+      const output = $('inheritOutput');
+
+      if (!parent || !child || !output) return;
+
+      const size = fontSize.value;
+      const col = color.value;
+      const hasBorder = border.checked;
+
+      $('inheritFontSizeVal').textContent = size + 'px';
+
+      // Parent styles
+      parent.style.fontSize = size + 'px';
+      parent.style.color = col;
+      parent.style.border = hasBorder ? `2px solid ${col}` : 'none';
+      parent.style.background = 'rgba(0, 229, 160, 0.1)';
+
+      // Child inherits
+      child.style.fontSize = 'inherit';
+      child.style.color = 'inherit';
+
+      output.textContent = `/* Parent styles */
+.parent {
+  font-size: ${size}px;
+  color: ${col};${hasBorder ? `\n  border: 2px solid ${col};` : ''}
+}
+
+/* Child inherits color and font-size */
+.child {
+  font-size: inherit; /* = ${size}px */
+  color: inherit; /* = ${col} */
+  /* border is NOT inherited */
+}`;
+    }
+
+    [fontSize, color, border].forEach(el => {
+      el.addEventListener('input', updateInheritance);
+      el.addEventListener('change', updateInheritance);
+    });
+
+    updateInheritance();
+  }
+
+  // ===== CSS VARIABLES =====
+  function initVariables() {
+    const primary = $('varPrimary');
+    const secondary = $('varSecondary');
+    const spacing = $('varSpacing');
+    const radius = $('varRadius');
+
+    if (!primary || !secondary || !spacing || !radius) return;
+
+    function updateVariables() {
+      const card1 = $('varCard1');
+      const card2 = $('varCard2');
+      const output = $('varOutput');
+
+      if (!card1 || !card2 || !output) return;
+
+      const primaryColor = primary.value;
+      const secondaryColor = secondary.value;
+      const spacingVal = spacing.value;
+      const radiusVal = radius.value;
+
+      $('varSpacingVal').textContent = spacingVal + 'px';
+      $('varRadiusVal').textContent = radiusVal + 'px';
+
+      // Apply variables
+      card1.style.padding = spacingVal + 'px';
+      card1.style.borderRadius = radiusVal + 'px';
+      card1.style.background = primaryColor;
+      card1.style.color = '#000';
+
+      card2.style.padding = spacingVal + 'px';
+      card2.style.borderRadius = radiusVal + 'px';
+      card2.style.background = secondaryColor;
+      card2.style.color = '#fff';
+
+      output.textContent = `:root {
+  --primary-color: ${primaryColor};
+  --secondary-color: ${secondaryColor};
+  --spacing: ${spacingVal}px;
+  --border-radius: ${radiusVal}px;
+}
+
+.card-1 {
+  padding: var(--spacing);
+  border-radius: var(--border-radius);
+  background: var(--primary-color);
+}
+
+.card-2 {
+  padding: var(--spacing);
+  border-radius: var(--border-radius);
+  background: var(--secondary-color);
+}`;
+    }
+
+    [primary, secondary, spacing, radius].forEach(el => {
+      el.addEventListener('input', updateVariables);
+      el.addEventListener('change', updateVariables);
+    });
+
+    updateVariables();
+  }
+
+  // ===== AT-RULES =====
+  function initAtRules() {
+    const atRuleType = $('atRuleType');
+    
+    if (!atRuleType) return;
+
+    const atRuleExamples = {
+      media: {
+        info: `<div class="text-xs font-bold mb-2">@media - Responsive Design</div>
+          <div class="text-xs text-muted">Apply styles based on device characteristics like screen size, orientation, or color scheme.</div>`,
+        code: `/* Mobile first approach */
+.container {
+  width: 100%;
+  padding: 1rem;
+}
+
+/* Tablet and up */
+@media (min-width: 768px) {
+  .container {
+    width: 750px;
+    padding: 2rem;
+  }
+}
+
+/* Desktop */
+@media (min-width: 1024px) {
+  .container {
+    width: 1000px;
+  }
+}
+
+/* Dark mode preference */
+@media (prefers-color-scheme: dark) {
+  body {
+    background: #000;
+    color: #fff;
+  }
+}`
+      },
+      import: {
+        info: `<div class="text-xs font-bold mb-2">@import - Import Stylesheets</div>
+          <div class="text-xs text-muted">Import external CSS files into your stylesheet. Must be at the top of the file.</div>`,
+        code: `/* Import external stylesheet */
+@import url('normalize.css');
+@import url('https://fonts.googleapis.com/css2?family=Roboto');
+
+/* Import with media query */
+@import url('print.css') print;
+@import url('mobile.css') screen and (max-width: 768px);
+
+/* Import layers */
+@import url('utilities.css') layer(utilities);
+
+/* Then your own styles */
+body {
+  font-family: 'Roboto', sans-serif;
+}`
+      },
+      keyframes: {
+        info: `<div class="text-xs font-bold mb-2">@keyframes - Animation Definitions</div>
+          <div class="text-xs text-muted">Define animation sequences that can be applied to elements.</div>`,
+        code: `/* Simple fade in */
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+/* Bounce animation */
+@keyframes bounce {
+  0%, 100% { 
+    transform: translateY(0); 
+  }
+  50% { 
+    transform: translateY(-20px); 
+  }
+}
+
+/* Multi-step animation */
+@keyframes colorChange {
+  0% { background: red; }
+  33% { background: yellow; }
+  66% { background: blue; }
+  100% { background: green; }
+}
+
+/* Apply animation */
+.element {
+  animation: fadeIn 1s ease-in;
+}`
+      },
+      'font-face': {
+        info: `<div class="text-xs font-bold mb-2">@font-face - Custom Fonts</div>
+          <div class="text-xs text-muted">Load custom fonts from local or remote sources.</div>`,
+        code: `/* Basic font declaration */
+@font-face {
+  font-family: 'MyCustomFont';
+  src: url('fonts/custom.woff2') format('woff2'),
+       url('fonts/custom.woff') format('woff');
+  font-weight: normal;
+  font-style: normal;
+}
+
+/* Multiple weights */
+@font-face {
+  font-family: 'MyFont';
+  src: url('fonts/myfont-bold.woff2');
+  font-weight: 700;
+}
+
+@font-face {
+  font-family: 'MyFont';
+  src: url('fonts/myfont-light.woff2');
+  font-weight: 300;
+}
+
+/* Use the font */
+body {
+  font-family: 'MyCustomFont', sans-serif;
+}`
+      },
+      supports: {
+        info: `<div class="text-xs font-bold mb-2">@supports - Feature Queries</div>
+          <div class="text-xs text-muted">Apply styles only if the browser supports a specific CSS feature.</div>`,
+        code: `/* Check if grid is supported */
+@supports (display: grid) {
+  .container {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+/* Fallback for older browsers */
+@supports not (display: grid) {
+  .container {
+    display: flex;
+    flex-wrap: wrap;
+  }
+}
+
+/* Check multiple features */
+@supports (backdrop-filter: blur(10px)) and 
+          (background: rgba(0, 0, 0, 0.5)) {
+  .glass {
+    backdrop-filter: blur(10px);
+    background: rgba(0, 0, 0, 0.5);
+  }
+}
+
+/* Check for custom properties */
+@supports (--custom: property) {
+  :root {
+    --primary: #00e5a0;
+  }
+}`
+      },
+      layer: {
+        info: `<div class="text-xs font-bold mb-2">@layer - Cascade Layers</div>
+          <div class="text-xs text-muted">Control the cascade order of your styles explicitly.</div>`,
+        code: `/* Define layer order (lowest to highest priority) */
+@layer reset, base, components, utilities;
+
+/* Reset layer */
+@layer reset {
+  * {
+    margin: 0;
+    padding: 0;
+  }
+}
+
+/* Base layer */
+@layer base {
+  body {
+    font-family: system-ui;
+    line-height: 1.5;
+  }
+}
+
+/* Components layer */
+@layer components {
+  .button {
+    padding: 0.5rem 1rem;
+    border-radius: 4px;
+  }
+}
+
+/* Utilities layer (highest priority) */
+@layer utilities {
+  .text-center { text-align: center; }
+  .hidden { display: none; }
+}`
+      }
+    };
+
+    function updateAtRule() {
+      const type = atRuleType.value;
+      const info = $('atRuleInfo');
+      const output = $('atRuleOutput');
+
+      if (!info || !output) return;
+
+      const example = atRuleExamples[type];
+      info.innerHTML = example.info;
+      output.textContent = example.code;
+    }
+
+    atRuleType.addEventListener('change', updateAtRule);
+    updateAtRule();
+  }
+
+  // ===== MAIN INITIALIZATION =====
+  function initSyntaxAndCascade() {
+    initSyntax();
+    initCascade();
+    initSpecificity();
+    initInheritance();
+    initVariables();
+    initAtRules();
+  }
+
+  // Run on DOM ready
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initSyntaxAndCascade);
+  } else {
+    initSyntaxAndCascade();
+  }
+
+  // Export for manual initialization if needed
+  window.initSyntaxAndCascade = initSyntaxAndCascade;
+
+})();
+// Disable Right Click
+document.addEventListener('contextmenu', function (e) {
+    e.preventDefault();
+});
+
+// Disable F12, Ctrl+Shift+I, Ctrl+Shift+J, Ctrl+U
+document.addEventListener('keydown', function (e) {
+    if (
+        e.key === "F12" ||
+        (e.ctrlKey && e.shiftKey && e.key === "I") ||
+        (e.ctrlKey && e.shiftKey && e.key === "J") ||
+        (e.ctrlKey && e.key === "U")
+    ) {
+        e.preventDefault();
+    }
+});
+  </script>
+
+</body>
+</html>
